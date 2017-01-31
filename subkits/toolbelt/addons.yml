@@ -1,0 +1,6 @@
+instance_groups:
+  - name: shield
+    templates:
+      - (( append ))
+      - { release: toolbelt, name: toolbelt}
+      - { release: toolbelt, name: toolbelt-quick}

@@ -1,0 +1,6 @@
+---
+params:
+  installation:     S.H.I.E.L.D. Alpha
+  shield_disk_pool: shield
+  shield_vm_type:   small
+  shield_network:   shield

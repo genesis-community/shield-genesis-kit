@@ -1,0 +1,16 @@
+---
+name: SHIELD Data Protective Services
+
+vault:
+  database/shield:
+    password: random 64
+  database/sessions:
+    password: random 64
+
+  provisioning:
+    key: random 128
+
+  webui:
+    password: random 16
+
+  agent: ssh 2048 fixed

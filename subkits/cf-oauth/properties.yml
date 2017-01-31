@@ -1,0 +1,30 @@
+---
+params:
+  oauth_provider_key:    (( param "Please provide your Github OAuth Provider Client Key" ))
+  oauth_provider_secret: (( param "Please provide your Github OAuth Provider Secret" ))
+  oauth_cf_uaa_groups:   (( param "Please provide a list of Cloud Foundry UAA groups you wish to grant SHIELD access to" ))
+instance_groups:
+  - name: shield
+    properties:
+      databases:
+        - name: sessions
+      roles:
+        - name: oauth
+          password: (( vault meta.vault_prefix "/database/sessions:password" ))
+
+      shield:
+        daemon:
+          auth:
+            oauth:
+              provider: cloudfoundry
+              key:      (( grab params.oauth_provider_key ))
+              secret:   (( grab params.oauth_provider_secret ))
+              authorization:
+                orgs:   (( grab params.oauth_cf_uaa_groups ))
+             sessions:
+               db:
+                 name:     sessions
+                 host:     (( grab instance_groups.shield.properties.databases.address ))
+                 port:     (( grab instance_groups.shield.properties.databases.port ))
+                 password: (( grab instance_groups.shield.properties.databases.roles.oauth.password ))
+                 username: (( grab instance_groups.shield.properties.databases.roles.oauth.name ))

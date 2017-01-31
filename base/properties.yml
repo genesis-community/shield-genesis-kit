@@ -1,0 +1,53 @@
+---
+meta:
+  vault: (( concat "secret/" params.site "/" params.env ))
+
+instance_groups:
+  - name: shield
+    instances: 1
+    persistent_disk_type: (( grab params.shield_disk_pool ))
+    vm_type:              (( grab params.shield_vm_type   ))
+    networks:
+      - name: (( grab params.shield_network ))
+        static_ips: (( static_ips 0 ))
+    templates:
+      - { release: shield, name: postgres      }
+      - { release: shield, name: shield-daemon }
+      - { release: shield, name: shield-agent  }
+      - { release: shield, name: agent-pgtools }
+      - { release: shield, name: nginx         }
+
+    properties:
+      databases:
+        db_scheme: postgres
+        address:   127.0.0.1
+        port:      5524
+        databases:
+          - name: shield
+        roles:
+          - name: shield
+            password: (( vault meta.vault "/database/shield:password" ))
+
+      shield:
+        provisioning_key: (( vault meta.vault "/provisioning:key" ))
+        agent:
+          autoprovision: (( concat "https://" instance_groups.shield.properties.shield.daemon.domain ))
+        daemon:
+          name:   (( grab params.installation ))
+          domain: (( grab instance_groups.shield.networks[0].static_ips[0] ))
+
+          ssh_private_key: (( vault meta.vault "/agent:private" ))
+
+          auth:
+            basic_user:      shield
+            basic_password:  (( vault meta.vault "/webui:password" ))
+            api_keys:
+              autoprovision: (( vault meta.vault "/provisioning:key" ))
+
+          database:
+            type:     postgres
+            db:       shield
+            host:     (( grab instance_groups.shield.properties.databases.address ))
+            port:     (( grab instance_groups.shield.properties.databases.port ))
+            username: (( grab instance_groups.shield.properties.databases.roles.0.name ))
+            password: (( grab instance_groups.shield.properties.databases.roles.0.password ))
