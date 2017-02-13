@@ -1,6 +1,6 @@
 ---
 meta:
-  vault: (( concat "secret/" params.env ))
+  vault: (( concat "secret/" params.vault ))
 
 instance_groups:
   - name: shield
