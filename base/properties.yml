@@ -2,15 +2,23 @@
 meta:
   vault: (( concat "secret/" params.vault ))
 
+update:
+  serial: false
+  canaries: 1
+  canary_watch_time: 30000-120000
+  max_in_flight: 1
+  update_watch_time: 30000-120000
+
 instance_groups:
   - name: shield
     instances: 1
     persistent_disk_type: (( grab params.shield_disk_pool ))
     vm_type:              (( grab params.shield_vm_type   ))
+    stemcell: ubuntu
     networks:
       - name: (( grab params.shield_network ))
         static_ips: (( static_ips 0 ))
-    templates:
+    jobs:
       - { release: shield, name: postgres      }
       - { release: shield, name: shield-daemon }
       - { release: shield, name: shield-agent  }
@@ -51,3 +59,14 @@ instance_groups:
             port:     (( grab instance_groups.shield.properties.databases.port ))
             username: (( grab instance_groups.shield.properties.databases.roles.0.name ))
             password: (( grab instance_groups.shield.properties.databases.roles.0.password ))
+
+releases:
+- name: shield
+  version: 6.6.0
+  sha1: 1ad7500dfa5408198906ece8febe9699bbbedd46
+  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=6.6.0
+
+stemcells:
+- os: ubuntu-trusty
+  version: latest
+  alias: ubuntu
