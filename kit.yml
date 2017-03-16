@@ -1,16 +1,74 @@
 ---
 name: SHIELD Data Protective Services
+author: Geoff Franks <geoff@starkandwayne.com
+homepage: http://github.com/starkandwayne/shield
+github: http://github.com/genesis-community/shield-genesis-kit
 
-vault:
-  database/shield:
-    password: random 64
-  database/sessions:
-    password: random 64
+subkits:
+- prompt: What authentication backend do you wish to use with SHIELD?
+  type: auth backend
+  choices:
+    - subkit: github-oauth
+      label: GitHub OAuth Integration
+    - subkit: cf-oauth
+      label: UAA OAuth Integration
+    - subkit: ~
+      label: HTTP Basic Auth
 
-  provisioning:
-    key: random 128
+- prompt: Should the toolbelt-boshrelease be installed on VMs to assist in troubleshooting?
+  subkit: toolbelt
 
-  webui:
-    password: random 16
+params:
+  github-oauth:
+    - ask: What is your GitHub OAuth Client ID?
+      description: |
+        The GitHub OAuth Client Key is used to authenticate SHIELD to GitHub,
+        so that SHIELD can then authorize users after they log into GitHub. GitHub refers
+        to this as the `client_id`. See https://developer.github.com/v3/oauth/ for more info.
+      vault: oauth:provider_key
+    - ask: What is your GitHub OAuth Client Secret?
+      description: |
+        The GitHub OAuth Client Secret is used to authenticate SHIELD to GitHub,
+        so that SHIELD can then authorize users after they log into GitHub. GitHub refers
+        to this as the `client_secret`. See https://developer.github.com/v3/oauth/ for more info.
+      vault: oauth:provider_secret
+    - ask: What GitHub organizations do you want to grant access to SHIELD?
+      description: |
+        SHIELD authorizes access based off of GitHub Organizations. Specify all the
+        orgs whose users will be given access to SHIELD here.
+      param: authz_allowed_orgs
 
-  agent: ssh 2048 fixed
+  cf-oauth:
+    - ask: What is your UAA Client ID?
+      description: |
+        The UAA client id is used to authenticate SHIELD to the UAA,
+        so that SHIELD can then authorize users after they log into the UAA.
+      vault: oauth:provider_key
+    - ask: What is your UAA Client Secret?
+      description: |
+        The UAA client secret is used to authenticate SHIELD to the UAA,
+        so that SHIELD can then authorize users after they log into the UAA.
+      vault: oauth:provider_secret
+    - ask: What UAA groups do you want to grant access to SHIELD?
+      description: |
+        SHIELD authorizes access based off of UAA Groups. Specify all the
+        groups whose users will be given access to SHIELD here.
+      param: authz_allowed_groups
+
+
+certificates: {}
+
+credentials:
+  base:
+    database/shield:
+      password: random 64
+    database/sessions:
+      password: random 64
+
+    provisioning:
+      key: random 128
+
+    webui:
+      password: random 16
+
+    agent: ssh 2048 fixed

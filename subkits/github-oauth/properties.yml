@@ -1,30 +1,27 @@
 ---
-params:
-  oauth_provider_key:    (( param "Please provide your Github OAuth Provider Client Key" ))
-  oauth_provider_secret: (( param "Please provide your Github OAuth Provider Secret" ))
-  oauth_github_organizations: (( param "Please provide a list of Github Organizations you wish to grant SHIELD access to" ))
 instance_groups:
   - name: shield
     properties:
       databases:
+        databases:
         - name: sessions
-      roles:
+        roles:
         - name: oauth
-          password: (( vault meta.vault_prefix "/database/sessions:password" ))
+          password: (( vault meta.vault "/database/sessions:password" ))
 
       shield:
         daemon:
           auth:
             oauth:
               provider: github
-              key:      (( grab params.oauth_provider_key ))
-              secret:   (( grab params.oauth_provider_secret ))
+              key:      (( vault meta.vault "/oauth:provider_key" ))
+              secret:   (( vault meta.vault "/oauth:provider_secret" ))
               authorization:
-                orgs:   (( grab params.oauth_github_organizations ))
-             sessions:
-               db:
-                 name:     sessions
-                 host:     (( grab instance_groups.shield.properties.databases.address ))
-                 port:     (( grab instance_groups.shield.properties.databases.port ))
-                 password: (( grab instance_groups.shield.properties.databases.roles.oauth.password ))
-                 username: (( grab instance_groups.shield.properties.databases.roles.oauth.name ))
+                orgs:   (( grab params.authz_allowed_orgs ))
+              sessions:
+                db:
+                  name:     sessions
+                  host:     (( grab instance_groups.shield.properties.databases.address ))
+                  port:     (( grab instance_groups.shield.properties.databases.port ))
+                  password: (( grab instance_groups.shield.properties.databases.roles.oauth.password ))
+                  username: (( grab instance_groups.shield.properties.databases.roles.oauth.name ))
