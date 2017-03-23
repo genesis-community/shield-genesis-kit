@@ -12,6 +12,7 @@ update:
 instance_groups:
   - name: shield
     instances: 1
+    azs: (( grab params.availability_zones ))
     persistent_disk_pool: (( grab params.shield_disk_pool ))
     vm_type:              (( grab params.shield_vm_type   ))
     stemcell: ubuntu

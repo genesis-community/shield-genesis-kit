@@ -15,6 +15,9 @@ subkits:
     - subkit: ~
       label: HTTP Basic Auth
 
+- prompt: Are you deploying SHIELD on Azure?
+  subkit: azure
+
 - prompt: Should the toolbelt-boshrelease be installed on VMs to assist in troubleshooting?
   subkit: toolbelt
 
