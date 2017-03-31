@@ -18,9 +18,6 @@ subkits:
 - prompt: Are you deploying SHIELD on Azure?
   subkit: azure
 
-- prompt: Should the toolbelt-boshrelease be installed on VMs to assist in troubleshooting?
-  subkit: toolbelt
-
 params:
   github-oauth:
     - ask: What is your GitHub OAuth Client ID?
