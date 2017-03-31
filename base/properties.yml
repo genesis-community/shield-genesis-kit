@@ -63,9 +63,9 @@ instance_groups:
 
 releases:
 - name: shield
-  version: 6.6.0
-  sha1: 1ad7500dfa5408198906ece8febe9699bbbedd46
-  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=6.6.0
+  version: 6.6.3
+  sha1: 44f1ebeb61d0f77f8f45e7fef752031ac28e7017
+  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=6.6.3
 
 stemcells:
 - os: ubuntu-trusty
