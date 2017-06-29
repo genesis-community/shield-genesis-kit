@@ -37,7 +37,7 @@ how users authenticate to SHIELD. One of these three must be specified
 - **github-oauth** - Sets up OAuth2 using `github.com` as the OAuth Provider.
   This allows you to give multiple people access to SHIELD, with access based on
   GitHub org membership.
-- **cf-oauth** - Sets up OAuth2 using a user-supplied [UAA][1] as the OAuth Provider.
+- **cf-oauth** - Sets up OAuth2 using a user-supplied [UAA][4] as the OAuth Provider.
   This allows you to give multiple people access to SHIELD with access based on
   their group membership inside the UAA.
 - **http-auth** - Sets up HTTP Basic Authentication and a single user/password
@@ -101,6 +101,21 @@ Required params:
   If a user authenticating to SHIELD is in at least one of the defined orgs, they are
   allowed into shield.
 
+Cloud Config
+------------
+
+By default, SHIELD uses the following VM types/networks/disk pools from your
+Cloud Config. Feel free to override them in your environment, if you would
+rather they use entities already existing in your Cloud Foundry:
+
+```
+params:
+  shield_network:   shield
+  shield_disk_pool: shield # should be at least 1GB
+  shield_vm_type:   small # VMs should have at least 1 CPU, and 1GB of memory
+```
+
 [1]: https://github.com/starkandwayne/shield
 [2]: https://starkandwayne.com
 [3]: https://github.com/starkandwayne/genesis
+[4]: https://github.com/cloudfoundry/uaa
