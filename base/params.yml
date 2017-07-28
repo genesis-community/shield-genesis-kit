@@ -1,9 +1,9 @@
 ---
 params:
   installation:     S.H.I.E.L.D. Alpha
-  shield_disk_pool: shield
-  shield_vm_type:   small
-  shield_network:   shield
+  shield_disk_pool: default
+  shield_vm_type:   default
+  shield_network:   default
 
   availability_zones:
   - z1
