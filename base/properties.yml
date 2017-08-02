@@ -5,7 +5,7 @@ meta:
 instance_groups:
   - name: shield
     instances: 1
-    azs: (( grab params.availability_zones ))
+    azs: [(( grab params.availability_zone ))]
     persistent_disk_pool: (( grab params.shield_disk_pool ))
     vm_type:              (( grab params.shield_vm_type   ))
     stemcell: ubuntu
