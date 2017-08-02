@@ -43,14 +43,6 @@ how users authenticate to SHIELD. One of these three must be specified
 - **http-auth** - Sets up HTTP Basic Authentication and a single user/password
   to be used by SHIELD for authenticating.
 
-#### Azure
-
-When deploying SHIELD on azure, you may want to consider the `azure` subkit for
-reconfiguring the availability zones in play. Since Azure uses availability sets,
-rather than zones, there is typically only one zone in play for networks/VMs,
-and the availability set would be defined by the Azure CPI automatically, or via
-`cloud_properties` in your Cloud Config.
-
 Params
 ------
 
