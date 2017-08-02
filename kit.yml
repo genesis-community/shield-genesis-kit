@@ -15,9 +15,6 @@ subkits:
     - subkit: ~
       label: HTTP Basic Auth
 
-- prompt: Are you deploying SHIELD on Azure?
-  subkit: azure
-
 params:
   base:
     - ask: Choose a static IP for the daemon API?
