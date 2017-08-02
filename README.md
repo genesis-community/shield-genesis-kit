@@ -43,21 +43,17 @@ how users authenticate to SHIELD. One of these three must be specified
 - **http-auth** - Sets up HTTP Basic Authentication and a single user/password
   to be used by SHIELD for authenticating.
 
-#### Azure
-
-When deploying SHIELD on azure, you may want to consider the `azure` subkit for
-reconfiguring the availability zones in play. Since Azure uses availability sets,
-rather than zones, there is typically only one zone in play for networks/VMs,
-and the availability set would be defined by the Azure CPI automatically, or via
-`cloud_properties` in your Cloud Config.
-
 Params
 ------
 
 #### Base Params
 
-There are no required params for SHIELD, when deployed with no subkits enabled.
-However, the following params can be overridden to customize your installation
+There is one required params for SHIELD when deployed with no subkits enabled.
+
+- **parms.shield_static_ip** - Choose a static IP from the network in your Cloud Config.
+  External SHIELD agents will call home to this IP.
+
+Additionally, the following params can be overridden to customize your installation
 if needed:
 
 - **params.installation** - controls the name of the SHIELD installation, as reported

@@ -5,7 +5,4 @@ params:
   shield_vm_type:   small
   shield_network:   shield
 
-  availability_zones:
-  - z1
-  - z2
-  - z3
+  availability_zone: z1
