@@ -2,13 +2,6 @@
 meta:
   vault: (( concat "secret/" params.vault ))
 
-update:
-  serial: false
-  canaries: 1
-  canary_watch_time: 30000-120000
-  max_in_flight: 1
-  update_watch_time: 30000-120000
-
 instance_groups:
   - name: shield
     instances: 1
@@ -18,56 +11,56 @@ instance_groups:
     stemcell: ubuntu
     networks:
       - name: (( grab params.shield_network ))
-        static_ips: (( static_ips 0 ))
+        static_ips: (( grab params.shield_static_ip ))
     jobs:
-      - { release: shield, name: postgres      }
-      - { release: shield, name: shield-daemon }
-      - { release: shield, name: shield-agent  }
-      - { release: shield, name: agent-pgtools }
-      - { release: shield, name: nginx         }
-
-    properties:
-      databases:
-        db_scheme: postgres
-        address:   127.0.0.1
-        port:      5524
-        databases:
-          - name: shield
-        roles:
-          - name: shield
+      - name: postgres
+        release: shield
+        properties:
+          databases:
+          - {name: shield,   tag: shield,   citext: true}
+          roles:
+          - name: shieldadmin
             password: (( vault meta.vault "/database/shield:password" ))
-
-      shield:
-        provisioning_key: (( vault meta.vault "/provisioning:key" ))
-        agent:
-          autoprovision: (( concat "https://" instance_groups.shield.properties.shield.daemon.domain ))
-        daemon:
+            tag: admin
+      - name: shield-daemon
+        release: shield
+        provides:
+          shield-daemon: {shared: true, as: shield-daemon}
+        properties:
           name:   (( grab params.installation ))
-          domain: (( grab instance_groups.shield.networks[0].static_ips[0] ))
-
+          domain: (( grab params.shield_static_ip ))
           ssh_private_key: (( vault meta.vault "/agent:private" ))
-
           auth:
-            basic_user:      shield
-            basic_password:  (( vault meta.vault "/webui:password" ))
+            username: shield
+            password:  (( vault meta.vault "/webui:password" ))
             api_keys:
               autoprovision: (( vault meta.vault "/provisioning:key" ))
+          ssl:
+            crt: (( vault meta.vault "/shield/certs/server:certificate" ))
+            key: (( vault meta.vault "/shield/certs/server:key" ))
+      - name: shield-agent
+        release: shield
+        consumes:
+          shield-daemon: {from: shield-daemon}
+        properties:
+          autoprovision: true
+          schedules: {default: daily 3am}
+          retention-policies: {default: 30}
 
-          database:
-            type:     postgres
-            db:       shield
-            host:     (( grab instance_groups.shield.properties.databases.address ))
-            port:     (( grab instance_groups.shield.properties.databases.port ))
-            username: (( grab instance_groups.shield.properties.databases.roles.0.name ))
-            password: (( grab instance_groups.shield.properties.databases.roles.0.password ))
+update:
+  canaries: 0
+  max_in_flight: 1
+  serial: true
+  canary_watch_time: 1000-120000
+  update_watch_time: 1000-120000
+
+stemcells:
+- alias: ubuntu
+  os: ubuntu-trusty
+  version: latest
 
 releases:
 - name: shield
-  version: 6.8.0
-  sha1: 1b9795956439132d510547a96d817602d21eb8c4
-  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=6.8.0
-
-stemcells:
-- os: ubuntu-trusty
-  version: latest
-  alias: ubuntu
+  version: 7.0.1
+  url: https://github.com/starkandwayne/shield-boshrelease/releases/download/v7.0.1/shield-7.0.1.tgz
+  sha1: 59523e113c2276a54eca308aa1ca944fd6e3a99c
