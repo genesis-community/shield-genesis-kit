@@ -50,7 +50,7 @@ Params
 
 There is one required params for SHIELD when deployed with no subkits enabled.
 
-- **parms.shield_static_ip** - Choose a static IP from the network in your Cloud Config.
+- **params.shield_static_ip** - Choose a static IP from the network in your Cloud Config.
   External SHIELD agents will call home to this IP.
 
 Additionally, the following params can be overridden to customize your installation
