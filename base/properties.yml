@@ -19,7 +19,7 @@ instance_groups:
           databases:
           - {name: shield,   tag: shield,   citext: true}
           roles:
-          - name: shieldadmin
+          - name: shield
             password: (( vault meta.vault "/database/shield:password" ))
             tag: admin
       - name: shield-daemon
