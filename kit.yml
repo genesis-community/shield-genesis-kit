@@ -75,7 +75,7 @@ params:
 
 certificates:
   base:
-    shield/certs:
+    certs:
       ca: { valid_for: 1y }
       server:
         valid_for: 1y
