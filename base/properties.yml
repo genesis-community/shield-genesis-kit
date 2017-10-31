@@ -36,8 +36,8 @@ instance_groups:
             api_keys:
               autoprovision: (( vault meta.vault "/provisioning:key" ))
           ssl:
-            crt: (( vault meta.vault "/shield/certs/server:certificate" ))
-            key: (( vault meta.vault "/shield/certs/server:key" ))
+            crt: (( vault meta.vault "/certs/server:certificate" ))
+            key: (( vault meta.vault "/certs/server:key" ))
       - name: shield-agent
         release: shield
         consumes:
