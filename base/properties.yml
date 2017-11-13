@@ -3,49 +3,60 @@ meta:
   vault: (( concat "secret/" params.vault ))
 
 instance_groups:
-  - name: shield
-    instances: 1
-    azs: [(( grab params.availability_zone ))]
-    persistent_disk_pool: (( grab params.shield_disk_pool ))
-    vm_type:              (( grab params.shield_vm_type   ))
-    stemcell: ubuntu
-    networks:
-      - name: (( grab params.shield_network ))
-        static_ips: (( grab params.shield_static_ip ))
-    jobs:
-      - name: postgres
-        release: shield
-        properties:
-          databases:
-          - {name: shield,   tag: shield,   citext: true}
-          roles:
-          - name: shield
-            password: (( vault meta.vault "/database/shield:password" ))
-            tag: admin
-      - name: shield-daemon
-        release: shield
-        provides:
-          shield-daemon: {shared: true, as: shield-daemon}
-        properties:
-          name:   (( grab params.installation ))
-          domain: (( grab params.shield_static_ip ))
-          ssh_private_key: (( vault meta.vault "/agent:private" ))
-          auth:
-            username: shield
-            password:  (( vault meta.vault "/webui:password" ))
-            api_keys:
-              autoprovision: (( vault meta.vault "/provisioning:key" ))
-          ssl:
-            crt: (( vault meta.vault "/certs/server:certificate" ))
-            key: (( vault meta.vault "/certs/server:key" ))
-      - name: shield-agent
-        release: shield
-        consumes:
-          shield-daemon: {from: shield-daemon}
-        properties:
-          autoprovision: true
-          schedules: {default: daily 3am}
-          retention-policies: {default: 30}
+- name: shield
+  instances: 1
+  azs: [(( grab params.availability_zone ))]
+  persistent_disk_pool: (( grab params.shield_disk_pool ))
+  vm_type:              (( grab params.shield_vm_type   ))
+  stemcell: ubuntu
+  networks:
+    - name: (( grab params.shield_network ))
+      static_ips: 
+      - (( grab params.shield_static_ip ))
+  jobs:
+  - name: postgres
+    release: shield
+    properties:
+      databases:
+      - name: shield
+        citext: true
+      roles:
+      - name: shield
+        password: (( vault meta.vault "/database/shield:password" ))
+
+  - name: shield-daemon
+    release: shield
+    provides:
+      shield-daemon: 
+        shared: true
+        as: shield-daemon
+    properties:
+      name:   (( grab params.installation ))
+      domain: (( grab params.shield_static_ip ))
+      ssh_private_key: (( vault meta.vault "/agent:private" ))
+      auth:
+        username: shield
+        password:  (( vault meta.vault "/webui:password" ))
+        api_keys:
+          autoprovision: (( vault meta.vault "/provisioning:key" ))
+      ssl:
+        crt: (( vault meta.vault "/certs/server:certificate" ))
+        key: (( vault meta.vault "/certs/server:key" ))
+      database:
+        type: postgres
+        host: (( grab instance_groups.shield.networks.0.static_ips.0 ))
+        port: 5432
+        username: shield
+        password: (( vault meta.vault "/database/shield:password" ))
+      
+  - name: shield-agent
+    release: shield
+    consumes:
+      shield-daemon: {from: shield-daemon}
+    properties:
+      autoprovision: true
+      schedules: {default: daily 3am}
+      retention-policies: {default: 30}
 
 update:
   canaries: 0
@@ -61,6 +72,6 @@ stemcells:
 
 releases:
 - name: shield
-  version: 7.0.1
-  url: https://github.com/starkandwayne/shield-boshrelease/releases/download/v7.0.1/shield-7.0.1.tgz
-  sha1: 59523e113c2276a54eca308aa1ca944fd6e3a99c
+  version: 7.0.2
+  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=7.0.2
+  sha1: aab8a1a088cef8db1055d44dd47d0ed8f6651e6e

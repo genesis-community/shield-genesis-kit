@@ -1,27 +1,30 @@
 ---
 instance_groups:
   - name: shield
-    properties:
-      databases:
+    jobs:
+    - name: postgres
+      properties:
         databases:
         - name: sessions
+          citext: true
         roles:
         - name: oauth
           password: (( vault meta.vault "/database/sessions:password" ))
 
-      shield:
-        daemon:
-          auth:
-            oauth:
-              provider: cloudfoundry
-              key:      (( vault meta.vault "/oauth:provider_key" ))
-              secret:   (( vault meta.vault "/oauth:provider_secret" ))
-              authorization:
-                orgs:   (( grab params.authz_allowed_groups ))
-              sessions:
-                db:
-                  name:     sessions
-                  host:     (( grab instance_groups.shield.properties.databases.address ))
-                  port:     (( grab instance_groups.shield.properties.databases.port ))
-                  password: (( grab instance_groups.shield.properties.databases.roles.oauth.password ))
-                  username: (( grab instance_groups.shield.properties.databases.roles.oauth.name ))
+    - name: shield-daemon
+      properties:
+        auth:
+          oauth:
+            provider: cloudfoundry
+            key:      (( vault meta.vault "/oauth:provider_key" ))
+            secret:   (( vault meta.vault "/oauth:provider_secret" ))
+            authorization:
+              orgs:   (( grab params.authz_allowed_orgs ))
+            sessions:
+              db:
+                name:     sessions
+                host:     (( grab instance_groups.shield.jobs.shield-daemon.properties.database.host ))
+                port:     (( grab instance_groups.shield.jobs.shield-daemon.properties.database.port ))
+                password: (( grab instance_groups.shield.jobs.shield-daemon.properties.database.password ))
+                username: (( grab instance_groups.shield.jobs.shield-daemon.properties.database.username ))
+
