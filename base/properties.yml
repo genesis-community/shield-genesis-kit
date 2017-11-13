@@ -44,6 +44,7 @@ instance_groups:
         key: (( vault meta.vault "/certs/server:key" ))
       database:
         type: postgres
+        db: shield
         host: (( grab instance_groups.shield.networks.0.static_ips.0 ))
         port: 5432
         username: shield
