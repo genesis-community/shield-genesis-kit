@@ -8,8 +8,6 @@ subkits:
 - prompt: What authentication backend do you wish to use with SHIELD?
   type: auth backend
   choices:
-    - subkit: github-oauth
-      label: GitHub OAuth Integration
     - subkit: cf-oauth
       label: UAA OAuth Integration
     - subkit: ~
@@ -34,26 +32,6 @@ params:
       param: shield_vm_type
     - description: Availability Zone for the server
       param: availability_zone
-
-  github-oauth:
-    - ask: What is your GitHub OAuth Client ID?
-      description: |
-        The GitHub OAuth Client Key is used to authenticate SHIELD to GitHub,
-        so that SHIELD can then authorize users after they log into GitHub. GitHub refers
-        to this as the `client_id`. See https://developer.github.com/v3/oauth/ for more info.
-
-      vault: oauth:provider_key
-    - ask: What is your GitHub OAuth Client Secret?
-      description: |
-        The GitHub OAuth Client Secret is used to authenticate SHIELD to GitHub,
-        so that SHIELD can then authorize users after they log into GitHub. GitHub refers
-        to this as the `client_secret`. See https://developer.github.com/v3/oauth/ for more info.
-      vault: oauth:provider_secret
-    - ask: What GitHub organizations do you want to grant access to SHIELD?
-      description: |
-        SHIELD authorizes access based off of GitHub Organizations. Specify all the
-        orgs whose users will be given access to SHIELD here.
-      param: authz_allowed_orgs
 
   cf-oauth:
     - ask: What is your UAA Client ID?
