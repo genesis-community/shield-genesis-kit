@@ -1,3 +1,0 @@
----
-params:
-  authz_allowed_groups: (( param "Please provide a list of Cloud Foundry UAA groups you wish to grant SHIELD access to" ))

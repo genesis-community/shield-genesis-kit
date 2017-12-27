@@ -14,51 +14,34 @@ instance_groups:
       static_ips: 
       - (( grab params.shield_static_ip ))
   jobs:
-  - name: postgres
-    release: shield
-    properties:
-      databases:
-      - name: shield
-        citext: true
-      roles:
-      - name: shield
-        password: (( vault meta.vault "/database/shield:password" ))
-
-  - name: shield-daemon
-    release: shield
-    provides:
-      shield-daemon: 
-        shared: true
-        as: shield-daemon
-    properties:
-      name:   (( grab params.installation ))
-      domain: (( grab params.shield_static_ip ))
-      ssh_private_key: (( vault meta.vault "/agent:private" ))
-      auth:
-        username: shield
-        password:  (( vault meta.vault "/webui:password" ))
-        api_keys:
-          autoprovision: (( vault meta.vault "/provisioning:key" ))
-      ssl:
-        crt: (( vault meta.vault "/certs/server:certificate" ))
-        key: (( vault meta.vault "/certs/server:key" ))
-      database:
-        type: postgres
-        db: shield
-        host: (( grab instance_groups.shield.networks.0.static_ips.0 ))
-        port: 5432
-        username: shield
-        password: (( vault meta.vault "/database/shield:password" ))
-      
   - name: shield-agent
     release: shield
     consumes:
-      shield-daemon: {from: shield-daemon}
+      shield: {from: shield}
     properties:
-      autoprovision: true
-      schedules: {default: daily 3am}
-      retention-policies: {default: 30}
-
+      core:
+        ca: (( vault meta.vault "/certs/ca:certificate" ))
+        
+  - name: core
+    release: shield
+    provides:
+      shield: 
+        shared: true
+        as: shield
+    properties:
+      domain: (( grab params.shield_static_ip ))
+      agent:
+        key: (( vault meta.vault "/agent:private" ))
+      tls:
+        certificate: (( vault meta.vault "/certs/server:certificate" ))
+        key:         (( vault meta.vault "/certs/server:key" ))
+      vault:
+        tls:
+          ca:          (( vault meta.vault "/vault/ca:certificate" ))
+          certificate: (( vault meta.vault "/vault/server:certificate" ))
+          key:         (( vault meta.vault "/vault/server:key" ))
+      core:
+        env: (( grab params.installation ))
 update:
   canaries: 0
   max_in_flight: 1
@@ -73,6 +56,4 @@ stemcells:
 
 releases:
 - name: shield
-  version: 7.0.2
-  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=7.0.2
-  sha1: aab8a1a088cef8db1055d44dd47d0ed8f6651e6e
+  version: latest
