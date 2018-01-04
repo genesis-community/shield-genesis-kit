@@ -29,6 +29,7 @@ instance_groups:
         shared: true
         as: shield
     properties:
+      require-shield-core: true
       domain: (( grab params.shield_static_ip ))
       agent:
         key: (( vault meta.vault "/agent:private" ))
