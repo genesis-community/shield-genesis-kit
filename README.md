@@ -139,9 +139,9 @@ rather they use entities already existing in your Cloud Foundry:
 
 ```
 params:
-  shield_network:   shield
-  shield_disk_pool: shield # should be at least 1GB
-  shield_vm_type:   small # VMs should have at least 1 CPU, and 1GB of memory
+  shield_network:   default
+  shield_disk_pool: default # should be at least 1GB
+  shield_vm_type:   default # VMs should have at least 1 CPU, and 1GB of memory
 ```
 
 [1]: https://github.com/starkandwayne/shield
