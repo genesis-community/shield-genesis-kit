@@ -2,6 +2,10 @@
 
 - Upgrade to SHIELD v8.0.8
 
+- This kit now supports`stemcell_os` and `stemcell_version`
+  parameters, which is a de facto standard for handling version
+  pinning and stemcell selection.
+
 # Release Engineering
 
 We're trying out a new Concourse CI/CD pipeline for automating the
