@@ -1,0 +1,83 @@
+---
+exodus:
+  url:     (( concat "https://" params.shield_static_ip ))
+  ca_cert: (( vault meta.vault "/certs/ca:certificate" ))
+  pubkey:  (( vault meta.vault "/agent:public" ))
+
+instance_groups:
+  - name: shield
+    instances: 1
+    azs: [(( grab params.availability_zone || "z1" ))]
+    persistent_disk_pool: (( grab params.shield_disk_pool || "shield" ))
+    vm_type:              (( grab params.shield_vm_type   || "small"  ))
+    stemcell: default
+    networks:
+      - name: (( grab params.shield_network || "shield" ))
+        static_ips:
+          - (( grab params.shield_static_ip ))
+
+    jobs:
+      - name: shield-agent
+        release: shield
+        consumes:
+          shield: {from: shield}
+        properties:
+          core:
+            ca: (( vault meta.vault "/certs/ca:certificate" ))
+          env:
+            http_proxy:  (( grab params.http_proxy  || "" ))
+            https_proxy: (( grab params.https_proxy || "" ))
+            no_proxy:    (( grab params.no_proxy    || "" ))
+
+      - name: core
+        release: shield
+        provides:
+          shield: { shared: true, as: shield }
+        properties:
+          require-shield-core: true
+          domain: (( grab params.shield_static_ip ))
+          agent:
+            key: (( vault meta.vault "/agent:private" ))
+          tls:
+            certificate: (( vault meta.vault "/certs/server:certificate" ))
+            key:         (( vault meta.vault "/certs/server:key" ))
+          vault:
+            tls:
+              ca:          ((vault_ca.certificate))
+              certificate: ((vault_tls.certificate))
+              key:         ((vault_tls.private_key))
+          core:
+            env: (( grab params.installation || "S.H.I.E.L.D." ))
+
+variables:
+  - name: vault_ca
+    type: certificate
+    options:
+      is_ca: yes
+      common_name: (( concat "ca.vault." params.env ".genesis.internal" ))
+      alternative_names: [127.0.0.1]
+
+  - name: vault_tls
+    type: certificate
+    options:
+      ca: vault_ca
+      common_name: (( concat "server.vault." params.env ".genesis.internal" ))
+      alternative_names: [127.0.0.1]
+
+update:
+  canaries: 0
+  max_in_flight: 1
+  serial: true
+  canary_watch_time: 1000-120000
+  update_watch_time: 1000-120000
+
+stemcells:
+- alias:   default
+  os:      (( grab params.stemcell_os      || "ubuntu-trusty" ))
+  version: (( grab params.stemcell_version || "latest" ))
+
+releases:
+  - name: shield
+    version: 8.0.8
+    url: https://github.com/starkandwayne/shield-boshrelease/releases/download/v8.0.8/shield-8.0.8.tgz
+    sha1: 55d1d6d8557f9b185fef7b5c6d73017b4c654f03

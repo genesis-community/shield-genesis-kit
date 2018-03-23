@@ -1,3 +1,0 @@
----
-params:
-  authentication: (( param "A shield OAuth specification for configuring auth providers that maps tenants and roles" ))

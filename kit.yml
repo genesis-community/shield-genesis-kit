@@ -1,61 +1,10 @@
 ---
-name: S.H.I.E.L.D. Backup Framework
-author: Geoff Franks <geoff@starkandwayne.com>
-homepage: http://github.com/starkandwayne/shield
-github: http://github.com/genesis-community/shield-genesis-kit
+name:   S.H.I.E.L.D. Data Protection
+author: James Hunt <jhunt@starkandwayne.com>
+docs:   https://shieldproject.io/genesis
+code:   https://github.com/genesis-community/shield-genesis-kit
 
-subkits:
-- prompt: What authentication backend do you wish to use with SHIELD?
-  type: auth backend
-  choices:
-    - subkit: oauth-provider
-      label: OAuth Provider (Github/UAA)
-    - subkit: ~
-      label: Shield User Authentiation
-- prompt: Does SHIELD need a proxy to access Internet?
-  subkit: proxy
-
-params:
-  base:
-    - ask: Choose a static IP for the daemon API?
-      description: |
-        Choose a static IP from the network in your Cloud Config.
-        External SHIELD agents will call home to this IP.
-      param: shield_static_ip
-      validate: /((^|\.)([0-9]|[0-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){4}/
-
-    - description: Title of SHIELD installation
-      param: installation
-    - description: The name of the BOSH network to deploy the server
-      param: shield_network
-    - description: The name of the BOSH disk type to give server
-      param: shield_disk_pool
-    - description: The name of the BOSH VM type for the server
-      param: shield_vm_type
-    - description: Availability Zone for the server
-      param: availability_zone
-
-  oauth-provider:
-    - param: authentication
-      description: |
-        A shield OAuth specification for configuring auth providers that maps tenants and roles.
-        An example can be found here - https://github.com/starkandwayne/shield/blob/4f25e8887fe9f6a41b56a6e40af1e9d522d04577/bin/testdev#L243
-    
-  proxy:
-    - ask: What is your http_proxy url?
-      description:
-        The host of your http_proxy
-      param: http_proxy
-    - ask: What is your https_proxy url?
-      description:
-        The host of your https_proxy
-      param: https_proxy
-    - ask: What are the addresses that needs to resolve on the local network and skip the proxy?
-      description:
-        Note that certain IaaS you may need to provide compute or other hostnames.
-        For example, ESXI host names on vCenter. Seperate each address by coma.
-      param: no_proxy
-
+genesis_version_min: 2.6.0
 
 certificates:
   base:
@@ -65,15 +14,7 @@ certificates:
         valid_for: 1y
         names:
         - "127.0.0.1"
-        # - "*.shield.${params.shield_network}.shield.bosh"
         - "${params.shield_static_ip}"
-    vault:
-      ca: { valid_for: 1y }
-      server:
-        valid_for: 1y
-        names:
-        - "127.0.0.1"
-        # - "*.vault.${params.shield_network}.shield.bosh"
 
 credentials:
   base:
