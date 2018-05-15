@@ -13,8 +13,14 @@ certificates:
       server:
         valid_for: 1y
         names:
-        - "127.0.0.1"
-        - "${params.shield_static_ip}"
+          - 127.0.0.1
+          - "${params.shield_static_ip}"
+    vault:
+      ca: { valid_for: 1y }
+      server:
+        valid_for: 1y
+        names:
+          - 127.0.0.1
 
 credentials:
   base:
