@@ -1,16 +1,11 @@
 #!/bin/bash
 set -eu
 
-    echo "----------------------------------------------------"
-    echo "$GENESIS_ENVIRONMENT SHIELD core"
-    echo "  $(lookup params.installation 'S.H.I.E.L.D.')"
+describe "#B{$(lookup params.installation 'S.H.I.E.L.D.')}"
     echo
 describe "endpoint information"
-    echo "  https://$(lookup params.shield_static_ip)"
+describe "  #C{https://$(lookup params.shield_static_ip)}"
     echo
 describe "default credentials"
-    echo "  username: admin"
-    echo "  password: shield"
-    echo
-    echo "----------------------------------------------------"
-    echo
+describe "  username: #M{admin}"
+describe "  password: #G{shield}"
