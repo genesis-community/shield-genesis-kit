@@ -42,7 +42,7 @@ addons:
         release: shield
         properties:
           shield-url: https://$ip
-          require-shield-coore: false
+          require-shield-core: false
 
           core:
             ca: |
