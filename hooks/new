@@ -20,8 +20,8 @@ else
 fi
 echo
 echo "params:"
-echo "  env:   $GENESIS_NAME"
+echo "  env:   $GENESIS_ENVIRONMENT"
 echo
 echo "  shield_static_ip: $ip"
 echo
-) >$GENESIS_ROOT/$GENESIS_NAME.yml
+) >$GENESIS_ROOT/$GENESIS_ENVIRONMENT.yml
