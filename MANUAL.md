@@ -42,9 +42,8 @@ infrastructure and application data.
   network must be defined in your cloud config.  Defaults to
   `small`.
 
-- `stemcell_os` - The operating system you want to deploy the
-  Blacksmith service broker itself on.  This defaults to
-  `ubuntu-trusty`.
+- `stemcell_os` - The operating system you want to deploy SHIELD
+  on.  This defaults to `ubuntu-trusty`.
 
 - `stemcell_version` - The version of the stemcell to deploy.
   Defaults to `latest`, which is usually what you want.
