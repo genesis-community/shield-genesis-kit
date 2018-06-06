@@ -40,7 +40,7 @@ infrastructure and application data.
 
 - `shield_network` - What network to deploy SHIELD into.  This
   network must be defined in your cloud config.  Defaults to
-  `small`.
+  `shield`.
 
 - `stemcell_os` - The operating system you want to deploy SHIELD
   on.  This defaults to `ubuntu-trusty`.
