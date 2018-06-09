@@ -12,7 +12,7 @@ infrastructure and application data.
 
 - `installation` - The name of the SHIELD installation, as
   reported from inside the SHIELD UI.
-  Defaults to `S.H.I.E.L.D. Alpha`
+  Defaults to `S.H.I.E.L.D.`
 
 ## HTTP(S) Proxy Parameters
 
@@ -48,10 +48,10 @@ infrastructure and application data.
 - `stemcell_version` - The version of the stemcell to deploy.
   Defaults to `latest`, which is usually what you want.
 
-- `availability_zones` - What BOSH HA availability zones to deploy
-  the Vault across.  The chosen network must have at least one
-  subnet in each of the listed zones, and the zones themselves
-  must be defined in your cloud config.  Defaults to `z1`.
+- `availability_zone` - What BOSH availability zone to deploy
+  SHIELD into.  The chosen network must have at least one
+  subnet in this zone, and the zone itself must be defined in your
+  cloud config.  Defaults to `z1`.
 
   **Note**: This Genesis Kit only deploys a single-instance SHIELD
   so availability zone configuration will not bring high

@@ -4,7 +4,7 @@ set -eu
 describe "#B{$(lookup params.installation 'S.H.I.E.L.D.')}"
     echo
 describe "endpoint information"
-describe "  #C{https://$(lookup params.shield_static_ip)}"
+describe "  #C{$(exodus url)}"
     echo
 describe "default credentials"
 describe "  username: #M{admin}"
