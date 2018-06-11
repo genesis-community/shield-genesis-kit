@@ -1,0 +1,24 @@
+#!/bin/bash
+set -eu
+
+if [[ $GENESIS_DEPLOY_RC == 0 ]]; then
+
+      echo; echo;
+  describe "#M{$GENESIS_ENVIRONMENT} SHIELD Core deployed!"
+      echo
+      echo "For details about the deployment, run"
+      echo
+  describe "  #G{genesis info $GENESIS_ENVIRONMENT}"
+      echo
+      echo "To access the SHIELD Web UI, run"
+      echo
+  describe "  #G{genesis do $GENESIS_ENVIRONMENT -- visit}"
+      echo
+      echo "You may want to configure your $GENESIS_ENVIRONMENT"
+      echo "BOSH director with an add-on, via runtime configs"
+      echo "To generate a good starting point, run"
+      echo
+  describe "  #G{genesis do $GENESIS_ENVIRONMENT -- runtime-config}"
+      echo
+
+fi

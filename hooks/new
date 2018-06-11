@@ -1,0 +1,27 @@
+#!/bin/bash
+set -eu
+
+prompt_for ip line \
+	'What IP address would you like to deploy SHIELD on?'
+
+prompt_for isoauth boolean \
+	'Would you like to authenticate against an OAuth2 endpoint (Github / UAA)?'
+
+(
+echo "---"
+echo "kit:"
+echo "  name:    $GENESIS_KIT_NAME"
+echo "  version: $GENESIS_KIT_VERSION"
+if [[ $isoauth == 'true' ]]; then
+	echo "  features:"
+	echo "    - oauth"
+else
+	echo "  features: []"
+fi
+echo
+echo "params:"
+echo "  env:   $GENESIS_ENVIRONMENT"
+echo
+echo "  shield_static_ip: $ip"
+echo
+) >$GENESIS_ROOT/$GENESIS_ENVIRONMENT.yml

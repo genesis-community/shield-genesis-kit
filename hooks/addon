@@ -1,0 +1,72 @@
+#!/bin/bash
+set -eu
+vault="secret/$GENESIS_VAULT_PREFIX"
+
+ip=$(lookup params.shield_static_ip)
+
+list() {
+  echo "The following addons are defined:"
+  echo
+  echo "  visit            Open the SHIELD Web Interface in"
+  echo "                   your browser (requires macOS)"
+  echo
+  echo "  runtime-config   Print out a BOSH runtime-config for"
+  echo "                   setting up SHIELD agent as an add-on"
+  echo
+}
+
+case $GENESIS_ADDON_SCRIPT in
+list)
+  list
+  exit 0
+  ;;
+
+visit)
+  if ! command -v open >/dev/null 2>&1; then
+    echo "The 'visit' addon script only works on macOS, currently."
+    exit 1
+  fi
+  open "https://$ip"
+  ;;
+
+runtime-config)
+  cat <<EOF
+releases:
+  - name:    shield
+    version: 8.0.8
+
+addons:
+  - name: shield-agent
+    jobs:
+      - name:    shield-agent
+        release: shield
+        properties:
+          shield-url: https://$ip
+          require-shield-core: false
+
+          core:
+            ca: |
+EOF
+  safe read $vault/certs/ca:certificate | sed -e 's/^/              /'
+  cat <<EOF
+
+          agent:
+            key: |
+EOF
+  safe read $vault/agent:public | sed -e 's/^/              /'
+  cat <<EOF
+
+          env:
+            http_proxy:  "$(lookup params.http_proxy)"
+            https_proxy: "$(lookup params.https_proxy)"
+            no_proxy:    "$(lookup params.no_proxy)"
+
+EOF
+  ;;
+
+*)
+  echo "Unrecognized SHIELD Genesis Kit addon."
+  list
+  exit 1
+  ;;
+esac

@@ -1,0 +1,25 @@
+#!/bin/bash
+set -eu
+
+declare -a merge
+
+validate_features oauth oauth-provider \
+                  proxy
+
+merge=( manifests/shield.yml )
+
+if want_feature oauth; then
+  merge+=( manifests/oauth.yml )
+fi
+
+if want_feature oauth-provider; then
+  echo >&2 "The oauth-provider feature flag is now just called 'oauth'."
+  merge+=( manifests/oauth.yml )
+fi
+
+if want_feature proxy; then
+  echo >&2 "You no longer need to explicitly specify the 'proxy' feature."
+  echo >&2 "If you remove it, everything will still work as expected."
+fi
+
+echo "${merge[@]}"

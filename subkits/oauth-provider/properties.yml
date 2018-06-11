@@ -1,9 +1,0 @@
----
-instance_groups:
-  - name: shield
-    jobs:
-    - name: core
-      properties:
-        core:
-          authentication:
-            (( grab params.authentication ))
