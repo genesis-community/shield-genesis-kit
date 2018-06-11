@@ -8,5 +8,5 @@ params:
   bosh:  genesis-ci
 
   shield_network:   genesis-ci
-  shield_static_ip: 10.200.138.3
+  shield_static_ip: 10.200.190.136
   installation:     S.H.I.E.L.D. CI/CD
