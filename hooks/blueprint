@@ -6,7 +6,7 @@ declare -a merge
 validate_features oauth oauth-provider \
                   proxy
 
-merge=( manifests/shield.yml )
+merge=( manifests/shield.yml manifests/releases.yml )
 
 if want_feature oauth; then
   merge+=( manifests/oauth.yml )
