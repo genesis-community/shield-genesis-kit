@@ -1,17 +1,34 @@
 #!/bin/bash
 set -eu
 vault="secret/$GENESIS_VAULT_PREFIX"
-
-ip=$(lookup params.shield_static_ip)
+shield_version=$(lookup --deployed "releases[name=shield].version")
+ip=$(lookup manifest release.params.shield_static_ip)
 
 list() {
   echo "The following addons are defined:"
   echo
-  echo "  visit            Open the SHIELD Web Interface in"
-  echo "                   your browser (requires macOS)"
+  echo "  visit            Open the SHIELD Web Interface in your browser"
+  echo "                   (requires macOS)"
   echo
-  echo "  runtime-config   Print out a BOSH runtime-config for"
-  echo "                   setting up SHIELD agent as an add-on"
+  echo "  runtime-config   [shortcut: rc] Print out a BOSH runtime-config for setting"
+  echo "                   up SHIELD agent as an add-on."
+  echo
+  echo "                   If you keep and check in the runtime config file into your"
+  echo "                   version control repository, you'll want to use the"
+  echo "                   --vaultify option.  This improves security by keeping"
+  echo "                   secrets as (( vault )) operations, but requires piping"
+  echo "                   through spruce before pushing changes to BOSH."
+  echo
+  echo "                   To automatically merge these changes to your runtime-config"
+  echo "                   file, do the following (please note, any order or comment in"
+  echo "                   this file will not be maintained -- manually add the output"
+  echo "                   of this command to your rc file if you wish to preserve"
+  echo "                   these):"
+  echo "                     genesis do <env> -- rc --vaultify | \\"
+  echo "                       spruce merge --skip-eval <rc-file> - > <new-rc-file>"
+  echo
+  echo "                   To upload changes to BOSH:"
+  echo "                     bosh -e <env> urc <(spruce merge <new-rc-file>)"
   echo
 }
 
@@ -29,11 +46,25 @@ visit)
   open "https://$ip"
   ;;
 
-runtime-config)
+runtime-config|rc)
+
+  vaultify=''
+  if [[ ${#@} -gt 1 ]] ; then
+    echo "Too many arguments.  Usage: '$GENESIS_ADDON_SCRIPT [--vaultify]'"
+    exit 1
+  elif [[ ${#@} -eq 1 ]] ; then
+    if [[ $1 == "--vaultify" ]] ; then
+      vaultify=1
+    else
+      echo "Unknown argument $1.  Usage: '$GENESIS_ADDON_SCRIPT [--vaultify]'"
+      exit 1
+    fi
+  fi
+
   cat <<EOF
 releases:
   - name:    shield
-    version: 8.0.8
+    version: $shield_version
 
 addons:
   - name: shield-agent
@@ -45,15 +76,32 @@ addons:
           require-shield-core: false
 
           core:
+EOF
+if [[ -n "$vaultify" ]] ; then
+  cat <<EOF
+            ca: (( vault "$vault/certs/ca:certificate" ))
+EOF
+else
+  cat <<EOF
             ca: |
 EOF
   safe read $vault/certs/ca:certificate | sed -e 's/^/              /'
+fi
   cat <<EOF
 
           agent:
+EOF
+if [[ -n "$vaultify" ]] ; then
+  cat <<EOF
+            key: (( vault "$vault/agent:public" ))
+EOF
+else
+  cat <<EOF
+
             key: |
 EOF
   safe read $vault/agent:public | sed -e 's/^/              /'
+fi
   cat <<EOF
 
           env:
