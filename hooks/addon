@@ -2,7 +2,7 @@
 set -eu
 vault="secret/$GENESIS_VAULT_PREFIX"
 shield_version=$(lookup --deployed "releases[name=shield].version")
-ip=$(lookup manifest release.params.shield_static_ip)
+ip=$(lookup --deployed params.shield_static_ip)
 
 list() {
   echo "The following addons are defined:"
