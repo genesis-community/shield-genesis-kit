@@ -2,7 +2,7 @@
 meta:
   kit:     shield
   release: S.H.I.E.L.D. Genesis Kit
-  target:  pipes-genesis
+  target:  buf
   url:     https://10.200.131.2.netip.cc
 
   initial_version: 0.3.0
