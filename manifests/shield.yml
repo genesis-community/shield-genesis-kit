@@ -10,7 +10,7 @@ instance_groups:
     azs: [(( grab params.availability_zone || "z1" ))]
     persistent_disk_pool: (( grab params.shield_disk_pool || "shield" ))
     vm_type:              (( grab params.shield_vm_type   || "small"  ))
-    stemcell: default
+    stemcell: xenial
     networks:
       - name: (( grab params.shield_network || "shield" ))
         static_ips:
@@ -57,6 +57,6 @@ update:
   update_watch_time: 1000-120000
 
 stemcells:
-- alias:   default
-  os:      (( grab params.stemcell_os      || "ubuntu-trusty" ))
+- alias:   xenial
+  os:      (( grab params.stemcell_os      || "ubuntu-xenial" ))
   version: (( grab params.stemcell_version || "latest" ))

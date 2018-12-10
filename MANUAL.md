@@ -43,7 +43,7 @@ infrastructure and application data.
   `shield`.
 
 - `stemcell_os` - The operating system you want to deploy SHIELD
-  on.  This defaults to `ubuntu-trusty`.
+  on.  This defaults to `ubuntu-xenial`.
 
 - `stemcell_version` - The version of the stemcell to deploy.
   Defaults to `latest`, which is usually what you want.
