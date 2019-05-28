@@ -10,6 +10,9 @@ infrastructure and application data.
   This must be designated as static in the chosen network's cloud
   config definition.
 
+- `external_domain` - Optional; the DNS name set up for the shield
+  server. This is used for certificate validation if present.
+
 - `installation` - The name of the SHIELD installation, as
   reported from inside the SHIELD UI.
   Defaults to `S.H.I.E.L.D.`

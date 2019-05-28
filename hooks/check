@@ -12,18 +12,19 @@ fi
 
 # Environment Parameter checks
 ok=yes
-ip=$(lookup params.shield_static_ip)
-describe "  checking if our certificates match the SHIELD static ip ($ip)..."
+domain=$(lookup params.external_domain)
+if [[ -z "$domain" ]]; then domain="$(lookup params.shield_static_ip)"; fi
+describe "  checking if our certificates match the SHIELD external domain ($domain)..."
 vault="secret/$GENESIS_VAULT_PREFIX"
 for cert in certs/server; do
   if ! safe exists "$vault/$cert"; then
     describe "    - $vault/$cert [#Y{MISSING}]"
   else
-    if safe --quiet x509 validate "$vault/$cert" --for "$ip" >/dev/null 2>&1; then
+    if safe --quiet x509 validate "$vault/$cert" --for "$domain" >/dev/null 2>&1; then
       describe "    - $vault/$cert [#G{OK}]"
     else
       describe "    - $vault/$cert [#R{INVALID}]"
-      safe x509 validate "$vault/$cert" --for "$ip" 2>&1 | sed -e 's/^/      /';
+      safe x509 validate "$vault/$cert" --for "$domain" 2>&1 | sed -e 's/^/      /';
       ok=no
       echo
     fi
@@ -36,4 +37,3 @@ else
   describe "  environment files [#R{FAILED}]"
   exit 1
 fi
-

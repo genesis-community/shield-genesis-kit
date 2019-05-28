@@ -1,6 +1,9 @@
 ---
+params:
+  external_domain: (( grab params.shield_static_ip ))
+ 
 exodus:
-  url:     (( concat "https://" params.shield_static_ip ))
+  url:     (( concat "https://" params.external_domain ))
   ca_cert: (( vault meta.vault "/certs/ca:certificate" ))
   pubkey:  (( vault meta.vault "/agent:public" ))
 
