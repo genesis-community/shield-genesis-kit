@@ -1,12 +1,10 @@
 ---
 kit:
-  subkits: []
+  features: []
 
 params:
   env:   ci-baseline
-  vault: genesis-ci/shield/ci/baseline
   bosh:  genesis-ci
 
-  shield_network:   genesis-ci
-  shield_static_ip: 10.200.190.136
+  shield_static_ip: 10.128.8.16
   installation:     S.H.I.E.L.D. CI/CD
