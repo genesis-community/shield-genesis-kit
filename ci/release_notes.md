@@ -1,6 +1,6 @@
 # Software Changes
 
-SHIELD bumped to 8.6.2 from 8.6.1
+SHIELD bumped to 8.6.2 from 8.6.0
 
 # Software Components
 
