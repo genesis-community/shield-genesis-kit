@@ -70,7 +70,7 @@ infrastructure and application data.
 
 By default, SHIELD uses the following VM types/networks/disk pools from your
 Cloud Config. Feel free to override them in your environment, if you would
-rather they use entities already existing in your Cloud Foundry:
+rather they used entities already existing in your Cloud Foundry:
 
 ```
 params:
