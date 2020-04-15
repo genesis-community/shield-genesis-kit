@@ -1,5 +1,7 @@
 ---
 name:   S.H.I.E.L.D. Data Protection
+version: 1.9.0
+
 author: James Hunt <jhunt@starkandwayne.com>
 docs:   https://shieldproject.io/genesis
 code:   https://github.com/genesis-community/shield-genesis-kit
