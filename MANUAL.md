@@ -97,9 +97,10 @@ kit:
   name:    shield
   version: 0.3.0
 
-params:
+genesis:
   env: acme-us-east-1-prod
 
+params:
   shield_static_ip: 10.0.0.7
   shield_network:   core-infra
   shield_disk_pool: backups
@@ -116,9 +117,10 @@ kit:
   features:
     - oauth2
 
-params:
+genesis:
   env: acme-us-east-1-dev
 
+params:
   shield_static_ip: 10.0.0.7
   authentication:
     - name:       Github
@@ -153,9 +155,10 @@ kit:
   features:
     - oauth2
 
-params:
+genesis:
   env: acme-us-east-1-dev
 
+params:
   shield_static_ip: 10.0.0.7
   authentication:
     - name:       UAA

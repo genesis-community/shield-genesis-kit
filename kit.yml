@@ -1,12 +1,13 @@
 ---
-name:   S.H.I.E.L.D. Data Protection
+name: shield
 version: 1.9.0
 
+description:   S.H.I.E.L.D. Data Protection
 author: James Hunt <jhunt@starkandwayne.com>
 docs:   https://shieldproject.io/genesis
 code:   https://github.com/genesis-community/shield-genesis-kit
 
-genesis_version_min: 2.6.0
+genesis_version_min: 2.7.6
 
 certificates:
   base:
@@ -17,6 +18,7 @@ certificates:
         names:
           - 127.0.0.1
           - "${params.shield_static_ip}"
+          - "${params.external_domain}"
     vault:
       ca: { valid_for: 1y }
       server:

@@ -2,9 +2,10 @@
 kit:
   features: []
 
-params:
+genesis:
   env:   ci-baseline
-  bosh:  genesis-ci
+  bosh_env:  genesis-ci
 
+params:
   shield_static_ip: 10.128.8.16
   installation:     S.H.I.E.L.D. CI/CD

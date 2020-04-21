@@ -1,35 +1,46 @@
 #!/bin/bash
-set -eu
-vault="secret/$GENESIS_VAULT_PREFIX"
-shield_version=$(lookup --deployed "releases[name=shield].version")
-ip=$(lookup --deployed params.shield_static_ip)
+set -u
+#Version check
+min_version="2.7.0"
+genesis_version="$(genesis -v 2>&1 | grep '^Genesis v' | sed -e 's/Genesis v\(.*\) (.*$/\1/')"
+if ! [[ "$genesis_version" =~ -dev$ ]] && ! new_enough "$genesis_version" "$min_version" ; then
+  describe >&2 "" "#R{[ERROR]} This kit needs Genesis $min_version.  Please upgrade before continuing" ""
+  exit 1
+fi
+set -e
+
+shield_version="$(lookup --deployed "releases[name=shield].version")"
+ip="$(lookup --deployed params.shield_static_ip)"
 
 list() {
-  echo "The following addons are defined:"
-  echo
-  echo "  visit            Open the SHIELD Web Interface in your browser"
-  echo "                   (requires macOS)"
-  echo
-  echo "  runtime-config   [shortcut: rc] Print out a BOSH runtime-config for setting"
-  echo "                   up SHIELD agent as an add-on."
-  echo
-  echo "                   If you keep and check in the runtime config file into your"
-  echo "                   version control repository, you'll want to use the"
-  echo "                   --vaultify option.  This improves security by keeping"
-  echo "                   secrets as (( vault )) operations, but requires piping"
-  echo "                   through spruce before pushing changes to BOSH."
-  echo
-  echo "                   To automatically merge these changes to your runtime-config"
-  echo "                   file, do the following (please note, any order or comment in"
-  echo "                   this file will not be maintained -- manually add the output"
-  echo "                   of this command to your rc file if you wish to preserve"
-  echo "                   these):"
-  echo "                     genesis do <env> -- rc --vaultify | \\"
-  echo "                       spruce merge --skip-eval <rc-file> - > <new-rc-file>"
-  echo
-  echo "                   To upload changes to BOSH:"
-  echo "                     bosh -e <env> urc <(spruce merge <new-rc-file>)"
-  echo
+  describe "$(cat <<EOF
+
+The following addons are defined for the #C{$GENESIS_KIT_ID} kit:
+
+  #G{visit}            Open the SHIELD Web Interface in your browser
+                   (requires macOS)
+
+  #G{runtime-config}   [shortcut: #G{rc}] Print out a BOSH runtime-config for setting
+                   up SHIELD agent as an add-on.
+
+                   If you keep and check in the runtime config file into your
+                   version control repository, you will want to use the
+                   #y{--vaultify} option.  This improves security by keeping
+                   secrets as (( vault )) operations, but requires piping
+                   through spruce before pushing changes to BOSH.
+
+                   To automatically merge these changes to your runtime-config
+                   file, do the following (please note, any order or comment in
+                   this file will not be maintained -- manually add the output
+                   of this command to your rc file if you wish to preserve
+                   these):
+                     #G{$GENESIS_CALL do "$GENESIS_ENVIRONMENT" -- rc --vaultify | \\
+                       spruce merge --skip-eval }#Gi{<rc-file>}#G{ - > }#Gi{<new-rc-file>}
+
+                   To upload changes to BOSH:
+                     #G{$GENESIS_BOSH_COMMAND -e "${BOSH_ALIAS:-${GENESIS_BOSH_ENVIRONMENT:-${BOSH_ENVIRONMENT:-$GENESIS_ENVIRONMENT}}}" urc <(spruce merge }#Gi{<new-rc-file>}#G{)}
+EOF
+)" ""
 }
 
 case $GENESIS_ADDON_SCRIPT in
@@ -66,6 +77,9 @@ releases:
   - name:    shield
     version: $shield_version
 
+meta:
+  vault: "${GENESIS_SECRETS_BASE}"
+
 addons:
   - name: shield-agent
     jobs:
@@ -79,13 +93,13 @@ addons:
 EOF
 if [[ -n "$vaultify" ]] ; then
   cat <<EOF
-            ca: (( vault "$vault/certs/ca:certificate" ))
+            ca: (( vault meta.vault "certs/ca:certificate" ))
 EOF
 else
   cat <<EOF
             ca: |
 EOF
-  safe read $vault/certs/ca:certificate | sed -e 's/^/              /'
+  safe read "${GENESIS_SECRETS_BASE}certs/ca:certificate" | sed -e 's/^/              /'
 fi
   cat <<EOF
 
@@ -93,14 +107,14 @@ fi
 EOF
 if [[ -n "$vaultify" ]] ; then
   cat <<EOF
-            key: (( vault "$vault/agent:public" ))
+            key: (( vault meta.vault "agent:public" ))
 EOF
 else
   cat <<EOF
 
             key: |
 EOF
-  safe read $vault/agent:public | sed -e 's/^/              /'
+  safe read "${GENESIS_SECRETS_BASE}agent:public" | sed -e 's/^/              /'
 fi
   cat <<EOF
 

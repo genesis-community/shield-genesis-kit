@@ -1,11 +1,12 @@
 #!/bin/bash
 set -eu
 
-describe "#B{$(lookup params.installation 'S.H.I.E.L.D.')}"
-    echo
-describe "endpoint information"
-describe "  #C{$(exodus url)}"
-    echo
-describe "default credentials"
-describe "  username: #M{admin}"
-describe "  password: #G{shield}"
+describe "" \
+         "#B{$(lookup params.installation 'S.H.I.E.L.D.')}" \
+         "" \
+         "endpoint information" \
+         "  #C{$(exodus url)}" \
+         "" \
+         "default credentials" \
+         "  username: #M{admin}" \
+         "  password: #G{shield}"
