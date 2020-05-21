@@ -4,13 +4,12 @@ set -eu
 declare -a merge
 
 validate_features oauth oauth-provider \
-                  proxy
+                  proxy postgres-addon
 
 merge=( manifests/shield.yml manifests/releases.yml )
 
-if want_feature oauth; then
-  merge+=( manifests/oauth.yml )
-fi
+want_feature oauth && merge+=( manifests/oauth.yml )
+want_feature postgres-addon && merge+=( manifests/addons/postgres.yml )
 
 if want_feature oauth-provider; then
   echo >&2 "The oauth-provider feature flag is now just called 'oauth'."
