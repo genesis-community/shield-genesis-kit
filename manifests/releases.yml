@@ -1,5 +1,0 @@
-releases:
-- name:    shield
-  version: 8.7.3
-  url:     https://github.com/shieldproject/shield-boshrelease/releases/download/v8.7.3/shield-8.7.3.tgz
-  sha1:    5efd4e6fca5827ae2a59dbbe765a7de058eccdd9
