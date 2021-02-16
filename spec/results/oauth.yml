@@ -1,0 +1,67 @@
+exodus:
+  ca_cert: <!{meta.vault}/certs/ca:certificate!>
+  pubkey: <!{meta.vault}/agent:public!>
+  url: https://10.99.0.16
+instance_groups:
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - consumes:
+      shield:
+        from: shield
+    name: shield-agent
+    properties:
+      core:
+        ca: <!{meta.vault}/certs/ca:certificate!>
+      env:
+        http_proxy: ""
+        https_proxy: ""
+        no_proxy: ""
+    release: shield
+  - name: core
+    properties:
+      agent:
+        key: <!{meta.vault}/agent:private!>
+      core:
+        authentication: test-auth
+        env: S.H.I.E.L.D. CI/CD
+      domain: 10.99.0.16
+      require-shield-core: true
+      tls:
+        certificate: <!{meta.vault}/certs/server:certificate!>
+        key: <!{meta.vault}/certs/server:key!>
+      vault:
+        tls:
+          ca: <!{meta.vault}/vault/ca:certificate!>
+          certificate: <!{meta.vault}/vault/server:certificate!>
+          key: <!{meta.vault}/vault/server:key!>
+    provides:
+      shield:
+        as: shield
+        shared: true
+    release: shield
+  name: shield
+  networks:
+  - name: shield
+    static_ips:
+    - 10.99.0.16
+  persistent_disk_type: shield
+  stemcell: xenial
+  vm_type: small
+name: oauth-shield
+releases:
+- name: shield
+  sha1: 5efd4e6fca5827ae2a59dbbe765a7de058eccdd9
+  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v8.7.3/shield-8.7.3.tgz
+  version: 8.7.3
+stemcells:
+- alias: xenial
+  os: ubuntu-xenial
+  version: latest
+update:
+  canaries: 0
+  canary_watch_time: 1000-300000
+  max_in_flight: 1
+  serial: true
+  update_watch_time: 1000-300000
