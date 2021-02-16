@@ -9,6 +9,6 @@ resources:
     type: github-release
     check_every: 24h
     source:
-      user:         (( grab meta.github.owner ))
-      repository:   shield-addon-postgres-boshrelease/
+      user:         shieldproject
+      repository:   shield-addon-postgres-boshrelease
       access_token: (( grab meta.github.access_token ))

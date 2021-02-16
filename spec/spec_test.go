@@ -29,7 +29,6 @@ var _ = Describe("Shield Kit", func() {
 			Name:        "postgres",
 			CloudConfig: "aws",
 			CPI:         "aws",
-			Focus:       true,
 		})
 	})
 })
