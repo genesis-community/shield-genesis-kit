@@ -11,7 +11,11 @@ touch ${custom_notes}
 cp ${custom_notes} ${notes}
 
 get_releases() {
-    spruce merge --go-patch spec/results/*.yml | spruce json |jq '.releases | sort_by(.name) | unique_by(.name) | .[]'
+    if [ ! -d spec ]; then
+        spruce merge --go-patch manifests/releases/*.yml | spruce json |jq '.releases | sort_by(.name) | unique_by(.name) | .[]'
+    else
+        spruce merge --go-patch spec/results/*.yml | spruce json |jq '.releases | sort_by(.name) | unique_by(.name) | .[]'
+    fi
 }
 
 release_paths=$(curl -s https://bosh.io/releases/ | grep '<a href="/releases/' | cut -d'"' -f2 | cut -d'?' -f1)
