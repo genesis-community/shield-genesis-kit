@@ -12,7 +12,7 @@ cp ${custom_notes} ${notes}
 
 get_releases() {
     if [ ! -d spec ]; then
-        spruce merge --go-patch manifests/releases/*.yml | spruce json |jq '.releases | sort_by(.name) | unique_by(.name) | .[]'
+        spruce merge --go-patch manifests/releases.yml | spruce json |jq '.releases | sort_by(.name) | unique_by(.name) | .[]'
     else
         spruce merge --go-patch spec/results/*.yml | spruce json |jq '.releases | sort_by(.name) | unique_by(.name) | .[]'
     fi
