@@ -6,7 +6,7 @@ prompt_for ip line \
 	'What IP address would you like to deploy SHIELD on?'
 
 external_domain= # assugbed below with prompt_for
-prompt_fo external_domain line \
+prompt_for external_domain line \
   'What domain name would you like to use? (leave blank to just use IP)' \
   --default ''
 
