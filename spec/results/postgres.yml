@@ -53,9 +53,9 @@ instance_groups:
 name: postgres-shield
 releases:
 - name: shield
-  sha1: 5efd4e6fca5827ae2a59dbbe765a7de058eccdd9
-  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v8.7.3/shield-8.7.3.tgz
-  version: 8.7.3
+  sha1: e903af864cf0afdec83950431fcbd6b6a10395ee
+  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=8.7.4
+  version: 8.7.4
 - name: shield-addon-postgres
   sha1: 45fb8d0c4919c55667cb18ee17e5e333a5eb5789
   url: https://github.com/shieldproject/shield-addon-postgres-boshrelease/releases/download/v1.0.2/shield-addon-postgres-1.0.2.tgz
