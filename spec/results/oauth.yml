@@ -47,7 +47,7 @@ instance_groups:
     static_ips:
     - 10.99.0.16
   persistent_disk_type: shield
-  stemcell: xenial
+  stemcell: bionic
   vm_type: small
 name: oauth-shield
 releases:
@@ -56,8 +56,8 @@ releases:
   url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=8.7.4
   version: 8.7.4
 stemcells:
-- alias: xenial
-  os: ubuntu-xenial
+- alias: bionic
+  os: ubuntu-bionic
   version: latest
 update:
   canaries: 0

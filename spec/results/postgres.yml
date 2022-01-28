@@ -48,7 +48,7 @@ instance_groups:
     static_ips:
     - 10.99.0.16
   persistent_disk_type: shield
-  stemcell: xenial
+  stemcell: bionic
   vm_type: small
 name: postgres-shield
 releases:
@@ -61,8 +61,8 @@ releases:
   url: https://github.com/shieldproject/shield-addon-postgres-boshrelease/releases/download/v1.0.2/shield-addon-postgres-1.0.2.tgz
   version: 1.0.2
 stemcells:
-- alias: xenial
-  os: ubuntu-xenial
+- alias: bionic
+  os: ubuntu-bionic
   version: latest
 update:
   canaries: 0
