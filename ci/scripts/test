@@ -25,7 +25,7 @@ header "Checking previous deployments on ${BOSH_ENVIRONMENT}..."
 $BOSH deployments
 
 header "Cleaning up from any previous deployments (if necessary)..."
-cleanup ci-baseline-${KIT_SHORTNAME}
+cleanup ci-gcp-baseline-${KIT_SHORTNAME}
 safe rm -rf secret/ci/baseline/${KIT_SHORTNAME}
 
 header "Deploying BASELINE environment to verify functionality..."
@@ -33,7 +33,7 @@ cd dev
 # make sure hooks are executable before screaming at shipit for failing.
 genesis compile-kit --name ${KIT_SHORTNAME} -v 9.9.9 --force
 cd ..
-genesis add-secrets ci-baseline
-genesis deploy -y ci-baseline
-$BOSH -d ci-baseline-${KIT_SHORTNAME} instances --ps
-cleanup ci-baseline-${KIT_SHORTNAME}
+genesis add-secrets ci-gcp-baseline
+genesis deploy -y ci-gcp-baseline
+$BOSH -d ci-gcp-baseline-${KIT_SHORTNAME} instances --ps
+cleanup ci-gcp-baseline-${KIT_SHORTNAME}
