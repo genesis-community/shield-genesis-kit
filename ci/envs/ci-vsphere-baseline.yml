@@ -3,5 +3,4 @@ kit:
   features: []
 
 genesis:
-  env:   ci-gcp-baseline
-
+  env:   ci-vsphere-baseline
