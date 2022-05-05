@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eux
 
 ip= # assigned below with prompt_for
 prompt_for ip line \
@@ -30,5 +30,8 @@ genesis_config_block
 
 echo "params:"
 echo "  shield_static_ip: $ip"
-[[ -n "$external_domain" ]] && echo "  external_domain: $external_domain"
+#[[ -n "$external_domain" ]] && echo "  external_domain: $external_domain"
+if [[ -n "$external_domain" ]] ; then
+  echo "  external_domain: $external_domain"
+fi
 ) > "$GENESIS_ROOT/$GENESIS_ENVIRONMENT.yml"
