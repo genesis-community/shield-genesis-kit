@@ -2,6 +2,6 @@
   path: /releases?/name=shield?
   value:
     name: shield
-    version: 8.7.4
-    url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=8.7.4
-    sha1: e903af864cf0afdec83950431fcbd6b6a10395ee
+    version: 8.8.0
+    url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=8.8.0
+    sha1: a0f63b169da82991da5bd859eaf3ba38213208a6
