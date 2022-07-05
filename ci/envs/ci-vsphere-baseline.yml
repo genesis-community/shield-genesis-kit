@@ -1,0 +1,6 @@
+---
+kit:
+  features: []
+
+genesis:
+  env:   ci-vsphere-baseline

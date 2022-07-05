@@ -4,8 +4,8 @@ kit:
 
 genesis:
   env:   ci-gcp-baseline
-  bosh_env:  gcp-uswest2-genesis-ci
 
 params:
   shield_static_ip: 10.4.8.16
   installation:     S.H.I.E.L.D. CI/CD
+
