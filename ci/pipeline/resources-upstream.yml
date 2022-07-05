@@ -1,0 +1,14 @@
+resources:
+  - name: bosh-release-shield
+    type: bosh-io-release
+    check_every: 24h
+    source:
+      repository: starkandwayne/shield-boshrelease
+
+  - name: bosh-release-shield-addon-postgres
+    type: github-release
+    check_every: 24h
+    source:
+      user:         shieldproject
+      repository:   shield-addon-postgres-boshrelease
+      access_token: (( grab meta.github.access_token ))

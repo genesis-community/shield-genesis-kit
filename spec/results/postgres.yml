@@ -2,9 +2,6 @@ exodus:
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
   pubkey: <!{meta.vault}/agent:public!>
   url: https://10.99.0.16
-  bosh: postgres
-  is_director: false
-  use_create_env: false
 instance_groups:
 - azs:
   - z1

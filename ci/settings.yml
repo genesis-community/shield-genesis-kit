@@ -1,27 +1,16 @@
 ---
 meta:
-  kit:             shield
-  release:         Shield Genesis Kit
-  target:          cloudpipes/genesis
-  url:             https://cloudpipes.starkandwayne.com
-  iaas:            gcp
-  exposed:         false
-  version_file:    version
-  initial_version: 1.11.0
+  kit:     shield
+  release: SHIELD Genesis Kit
+  target:  pipes@genesis
+  url:     https://pipes.starkandwayne.com
+  exposed: yes
 
-  # upstream:
-  #   package:  cf-deployment
-  #
   bosh:
     uri:      ((bosh.uri))
     username: ((bosh.username))
     password: ((bosh.password))
     cacert:   ((bosh.ca))
-
-  credhub:
-    url:      ((bosh.credhub_url))
-    username: ((bosh.credhub_username))
-    password: ((bosh.credhub_password))
 
   vault:
     url:       ((vault.url))
@@ -34,8 +23,7 @@ meta:
   github:
     owner:        genesis-community
     repo:         shield-genesis-kit
-    branch:       develop
-    main-branch:  main
+    branch:       master
     private_key:  ((github.private_key))
     access_token: ((github.access_token))
 
