@@ -2,8 +2,8 @@
 meta:
   kit:     shield
   release: SHIELD Genesis Kit
-  target:  pipes@genesis
-  url:     https://pipes.starkandwayne.com
+  target:  genesis@cloudpipes
+  url:     https://cloudpipes.starkandwayne.com
   exposed: yes
 
   bosh:
