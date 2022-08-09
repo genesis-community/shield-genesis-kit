@@ -7,6 +7,6 @@ describe "" \
          "endpoint information" \
          "  #C{$(exodus url)}" \
          "" \
-         "default credentials" \
-         "  username: #M{admin}" \
-         "  password: #G{shield}"
+         "admin credentials" \
+         "  username: #M{$(exodus admin_username)}" \
+         "  password: #G{$(exodus admin_password)}"
