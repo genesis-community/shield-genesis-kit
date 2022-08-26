@@ -1,4 +1,6 @@
 exodus:
+  admin_password: shield
+  admin_username: admin
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
   pubkey: <!{meta.vault}/agent:public!>
   url: https://10.99.0.16
@@ -51,9 +53,9 @@ instance_groups:
 name: base-shield
 releases:
 - name: shield
-  sha1: a0f63b169da82991da5bd859eaf3ba38213208a6
-  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=8.8.0
-  version: 8.8.0
+  sha1: 523f562c97f4b2538f61e160ba6207a34344a0f0
+  url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=9.0.0
+  version: 9.0.0
 stemcells:
 - alias: bionic
   os: ubuntu-bionic
