@@ -1,7 +1,7 @@
 exodus:
-  admin_password: shield
-  admin_username: admin
-  bosh: postgres
+  admin_password: <!{meta.vault}/failsafe:admin_password!>
+  admin_username: superuser
+  bosh: secure
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
   is_director: false
   pubkey: <!{meta.vault}/agent:public!>
@@ -31,6 +31,9 @@ instance_groups:
       core:
         env: S.H.I.E.L.D. CI/CD
       domain: 10.99.0.16
+      failsafe:
+        password: <!{meta.vault}/failsafe:admin_password!>
+        username: superuser
       require-shield-core: true
       tls:
         certificate: <!{meta.vault}/certs/server:certificate!>
@@ -45,8 +48,6 @@ instance_groups:
         as: shield
         shared: true
     release: shield
-  - name: shield-addon-postgres-11
-    release: shield-addon-postgres
   name: shield
   networks:
   - name: shield
@@ -55,16 +56,12 @@ instance_groups:
   persistent_disk_type: shield
   stemcell: bionic
   vm_type: small
-name: postgres-shield
+name: secure-shield
 releases:
 - name: shield
   sha1: 523f562c97f4b2538f61e160ba6207a34344a0f0
   url: https://bosh.io/d/github.com/starkandwayne/shield-boshrelease?v=9.0.0
   version: 9.0.0
-- name: shield-addon-postgres
-  sha1: 45fb8d0c4919c55667cb18ee17e5e333a5eb5789
-  url: https://github.com/shieldproject/shield-addon-postgres-boshrelease/releases/download/v1.0.2/shield-addon-postgres-1.0.2.tgz
-  version: 1.0.2
 stemcells:
 - alias: bionic
   os: ubuntu-bionic

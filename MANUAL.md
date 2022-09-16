@@ -66,6 +66,12 @@ infrastructure and application data.
   Github or UAA.  See the _Examples_ section for more details on
   properly configuring Github and UAA providers.
 
+- `secure` - Configure the admin user account.  By default, the admin user
+  account credentials are static.  Use this feature to have a password
+  generated automatically and optionally specify an alternative username with
+  by setting `params.admin_username` in the environment file.  The password
+  can then be rotated as needed by your company's security policy.
+
 # Cloud Configuration
 
 By default, SHIELD uses the following VM types/networks/disk pools from your
