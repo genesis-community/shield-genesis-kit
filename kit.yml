@@ -29,3 +29,7 @@ certificates:
 credentials:
   base:
     agent: ssh 2048 fixed
+
+  secure:
+    failsafe:
+      admin_password: random 24

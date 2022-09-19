@@ -30,5 +30,10 @@ var _ = Describe("Shield Kit", func() {
 			CloudConfig: "aws",
 			CPI:         "aws",
 		})
+		Test(Environment{
+			Name:        "secure",
+			CloudConfig: "aws",
+			CPI:         "aws",
+		})
 	})
 })

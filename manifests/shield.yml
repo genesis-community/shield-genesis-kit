@@ -6,8 +6,8 @@ exodus:
   url:     (( concat "https://" params.external_domain ))
   ca_cert: (( vault meta.vault "/certs/ca:certificate" ))
   pubkey:  (( vault meta.vault "/agent:public" ))
-  admin_username: (( grab instance_groups.shield.jobs.core.properties.failsafe.username || "admin" ))
-  admin_password: (( grab instance_groups.shield.jobs.core.properties.failsafe.password || "shield" ))
+  admin_username: "admin"
+  admin_password: "shield"
 
 instance_groups:
   - name: shield
