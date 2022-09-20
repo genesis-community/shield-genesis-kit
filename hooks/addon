@@ -9,8 +9,30 @@ if ! [[ "$genesis_version" =~ -dev$ ]] && ! new_enough "$genesis_version" "$min_
 fi
 set -e
 
-shield_version="$(lookup --deployed "releases[name=shield].version")"
-ip="$(lookup --deployed params.shield_static_ip)"
+# TODO: This should all be using exodus data, not vault and deployed manifest data
+
+was_deployed() {
+  test -f "${GENESIS_ROOT}/.genesis/manifest/${GENESIS_ENVIRONMENT}.yml"
+}
+
+shield_version() {
+  if ! was_deployed; then
+    bail "" \
+      "#R{[ERROR]} No deployment found.  Please run deploy on this environment before" \
+      "        running any addons"
+  fi
+  lookup --deployed "releases[name=shield].version"
+}
+
+ip() {
+  if ! was_deployed; then
+    bail "" \
+      "#R{[ERROR]} No deployment found.  Please run deploy on this environment before" \
+      "        running any addons"
+  fi
+  lookup --deployed "params.shield_static_ip"
+}
+
 
 list() {
   describe "$(cat <<EOF
@@ -54,10 +76,11 @@ visit)
     echo "The 'visit' addon script only works on macOS, currently."
     exit 1
   fi
-  open "https://$ip"
+  open "https://$(ip)"
   ;;
 
 runtime-config|rc)
+
 
   vaultify=''
   if [[ ${#@} -gt 1 ]] ; then
@@ -75,7 +98,7 @@ runtime-config|rc)
   cat <<EOF
 releases:
   - name:    shield
-    version: $shield_version
+    version: $(shield_version)
 
 meta:
   vault: "${GENESIS_SECRETS_BASE}"
@@ -86,7 +109,7 @@ addons:
       - name:    shield-agent
         release: shield
         properties:
-          shield-url: https://$ip
+          shield-url: https://$(ip)
           require-shield-core: false
 
           core:
