@@ -179,9 +179,6 @@ fi
 
 if [[ "$SKIP_SMOKE_TESTS" == "false" ]]; then
 
-  header "Checking vms..."
-  $BOSH -d "${DEPLOY_ENV}-${KIT_SHORTNAME}" instances --ps
-
 	header "Validating addons..."
   genesis "do" "${DEPLOY_ENV}" -- rc --vaultify
 
