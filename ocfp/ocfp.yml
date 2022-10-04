@@ -68,7 +68,6 @@ instance_groups:
             username: (( grab meta.shield.admin.username ))
             password: (( grab meta.shield.admin.password ))
 
-# TODO: should udpate & stemcells be elsewhere???
 update:
   canaries: 0
   max_in_flight: 1
@@ -77,7 +76,7 @@ update:
   update_watch_time: 1000-300000
 
 stemcells:
-- alias:   bionic
-  os:      (( grab params.stemcell_os      || "ubuntu-bionic" ))
-  version: (( grab params.stemcell_version || "latest" ))
+- alias:   (( grab meta.stemcell.name ))
+  os:      (( grab meta.stemcell.os   ))
+  version: (( grab meta.stemcell.name ))
 
