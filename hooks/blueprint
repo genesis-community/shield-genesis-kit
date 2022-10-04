@@ -3,18 +3,42 @@ set -eu
 
 declare -a merge
 
-validate_features oauth oauth-provider \
-                  proxy postgres-addon secure
+validate_features \
+  ocfp oauth oauth-provider \
+  proxy postgres-addon secure
 
-merge=( manifests/shield.yml manifests/releases/shield.yml )
+# ocfp feature here
+if want_feature "ocfp" ; then
+  merge=( 
+    "ocfp/meta.yml"
+    "ocfp/ocfp.yml"
+    "manifests/releases/shield.yml"
+  )
+else
+  merge=( 
+    "manifests/shield.yml"
+    "manifests/releases/shield.yml"
+  )
+
+  if want_feature postgres-addon ; then 
+    merge+=( 
+    "manifests/addons/postgres.yml"
+    "manifests/releases/shield-addon-postgres.yml"
+    )
+  fi
+
+  if want_feature secure ; then
+    merge+=( "manifests/addons/secure.yml" )
+  fi
+fi
 
 want_feature oauth && merge+=( manifests/oauth.yml )
-want_feature postgres-addon && merge+=( manifests/addons/postgres.yml manifests/releases/shield-addon-postgres.yml )
-want_feature secure && merge+=( manifests/addons/secure.yml )
+
+# TODO: Add `ops/` file support here
 
 if want_feature oauth-provider; then
   echo >&2 "The oauth-provider feature flag is now just called 'oauth'."
-  merge+=( manifests/oauth.yml )
+  merge+=( "manifests/oauth.yml" )
 fi
 
 if want_feature proxy; then

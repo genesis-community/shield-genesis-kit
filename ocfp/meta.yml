@@ -1,0 +1,49 @@
+---
+meta:
+  env:
+    name:  (( grab $GENESIS_ENVIRONMENT ))
+    slug:  (( grab $GENESIS_SECRETS_SLUG ))
+    scale: (( grab params.env.scale || "dev" ))
+
+  vault:
+    mount:       (( grab $GENESIS_SECRETS_MOUNT ))
+    exodus_path: (( grab $GENESIS_EXODUS_MOUNT ))
+    tf_path:     (( concat meta.vault.mount "tf/" meta.env.slug ))
+    env_path:    (( concat meta.vault.mount meta.env.slug ))
+    certs_path:  (( concat meta.vault.mount "certs" ))
+
+  trusted_certs:
+    - (( vault meta.vault.certs_path "/org:ca" )) # Organization CA, if exists
+    - (( vault meta.vault.certs_path "/dbs:ca" )) # External Databases CA
+
+  shield:
+    ip: (( vault meta.vault.tf_path "/bosh/iaas/subnets/ocfp/0/ips/mgmt/reserved:shield_ip" ))
+
+    admin:
+      username: (( vault meta.vault.tf_path "/shield/admin:username" ))
+      password: (( vault meta.vault.tf_path "/shield/admin:password" ))
+
+    az:         (( vault meta.vault.tf_path "/bosh/iaas/subnets/ocfp/0:availability_zone" ))
+    disk_type:  (( concat "shield-" meta.env.scale ))
+    vm_type:    (( concat "shield-" meta.env.scale ))
+    network:    (( concat meta.env.name "-shield" ))
+    domain:     (( vault meta.vault.tf_path "/net/shield:fqdn" ))
+    url:        (( concat "https://" meta.shield.domain ))
+    ca:         (( vault meta.vault "/certs/ca:certificate" ))
+
+    agent:
+      pub:      (( vault meta.vault "/agent:public" ))
+      key:      (( vault meta.vault "/agent:private" ))
+
+    server:
+      cert:     (( vault meta.vault "/certs/server:certificate" ))
+      key:      (( vault meta.vault "/certs/server:key" ))
+
+    vault:
+      ca:       (( vault meta.vault "/vault/ca:certificate" ))
+      cert:     (( vault meta.vault "/vault/server:certificate" ))
+      key:      (( vault meta.vault "/vault/server:key" ))
+
+    core:
+      name: (( concat meta.env.name "-shield" ))
+

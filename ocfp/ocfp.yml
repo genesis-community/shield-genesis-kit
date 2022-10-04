@@ -1,0 +1,83 @@
+---
+params:
+  admin_username:   (( grab meta.shield.admin.username ))
+  external_domain:  (( grab meta.shield.domain ))
+
+  # These two required by `check`:
+  shield_static_ip: (( grab meta.shield.ip ))
+  external_domain: (( grab params.shield_static_ip ))
+
+exodus:
+  url:     (( grab meta.exodus.url ))
+
+  ca_cert: (( grab meta.shield.ca ))
+  pubkey:  (( grab meta.shield.agent.pub ))
+
+  admin_username: (( grab meta.shield.admin.username ))
+  admin_password: (( grab meta.shield.admin.password ))
+
+instance_groups:
+  - name: shield
+    instances: 1
+    azs:
+      - (( grab meta.shield.az ))
+
+    persistent_disk_type: (( grab meta.shield.disk_type ))
+    vm_type:              (( grab meta.shield.vm_type ))
+
+    stemcell: bionic
+
+    networks:
+      - name: (( grab meta.shield.network ))
+        static_ips:
+          - (( grab meta.shield.ip ))
+
+    jobs:
+      - name: shield-agent
+        release: shield
+        consumes:
+          shield: { from: shield }
+        properties:
+          core:
+            ca: (( grab meta.shield.ca ))
+          env:
+            http_proxy:  (( params.http_proxy  || "" ))
+            https_proxy: (( params.https_proxy || "" ))
+            no_proxy:    (( params.no_proxy    || "" ))
+
+      - name: core
+        release: shield
+        provides:
+          shield: { shared: true, as: shield }
+        properties:
+          require-shield-core: true
+          domain: (( grab meta.shield.ip )) # Q: Could this be meta.shield.domain?
+          agent:
+            key: (( grab meta.shield.agent.key ))
+          tls:
+            certificate: (( grab meta.shield.server.cert ))
+            key:         (( grab meta.shield.server.key )) 
+          vault:
+            tls:
+              ca:          (( grab meta.vault.ca ))
+              certificate: (( grab meta.vault.cert ))
+              key:         (( grab meta.vault.key ))
+          core:
+            env: (( grab meta.sheld.core.name ))
+          failsafe:
+            username: (( grab meta.shield.admin.username ))
+            password: (( grab meta.shield.admin.password ))
+
+# TODO: should udpate & stemcells be elsewhere???
+update:
+  canaries: 0
+  max_in_flight: 1
+  serial: true
+  canary_watch_time: 1000-300000
+  update_watch_time: 1000-300000
+
+stemcells:
+- alias:   bionic
+  os:      (( grab params.stemcell_os      || "ubuntu-bionic" ))
+  version: (( grab params.stemcell_version || "latest" ))
+
