@@ -13,9 +13,9 @@ if [[ -n "$GENESIS_CLOUD_CONFIG" ]] ; then
     _disk_type="shield"
   fi
 
-  cloud_config_needs vm_type   "$(lookup params.bosh_vm_type   ${_vm_type})"
-  cloud_config_needs network   "$(lookup params.bosh_network   ${_network})"
-  cloud_config_needs disk_type "$(lookup params.bosh_disk_pool ${_disk_type})"
+  cloud_config_needs vm_type   "$(lookup params.shield_vm_type   ${_vm_type})"
+  cloud_config_needs network   "$(lookup params.shield_network   ${_network})"
+  cloud_config_needs disk_type "$(lookup params.shield_disk_pool ${_disk_type})"
 
   if check_cloud_config; then
     describe "  cloud config [#G{OK}]"
