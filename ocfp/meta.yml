@@ -1,17 +1,22 @@
 ---
 meta:
-  env_name:          (( grab $GENESIS_ENVIRONMENT ))
-  env_slug:          (( grab $GENESIS_SECRETS_SLUG ))
-  env_scale:         (( grab params.env_scale || "dev" ))
+  # NOTE: vvv next genesis rc will have these 3  built in, remove then
+  vault_env:         (( grab $GENESIS_SECRETS_SLUG ))
   vault_mount:       (( grab $GENESIS_SECRETS_MOUNT ))
   vault_exodus_path: (( grab $GENESIS_EXODUS_MOUNT ))
-  vault_tf_path:     (( concat meta.vault_mount "tf/" meta.env_slug ))
-  vault_env_path:    (( concat meta.vault_mount meta.env_slug ))
-  vault_certs_path:  (( concat meta.vault_mount "certs" ))
+  # NOTE: ^^^
 
-  trusted_certs:
-    - (( vault meta.vault_certs_path "/org:ca" )) # Organization CA, if exists
-    - (( vault meta.vault_certs_path "/dbs:ca" )) # External Databases CA
+  ocfp:
+    env:
+      scale: (( grab params.env.scale || "dev" ))
+
+    vault:
+      tf: (( concat meta.vault_mount "tf/" meta.vault_env ))
+
+    certs:
+      trusted:
+        - (( vault meta.vault_mount "/certs/org:ca" )) # Organization CA, if exists
+        - (( vault meta.vault_mount "/certs/dbs:ca" )) # External Databases CA
 
   stemcell:
     name:    (( grab params.stemcell_name    || "bionic" ))
@@ -19,20 +24,20 @@ meta:
     version: (( grab params.stemcell_version || "latest" ))
 
   shield:
-    ip:     (( vault meta.vault_tf_path "/bosh/iaas/subnets/ocfp/0/ips/mgmt/reserved:shield_ip" ))
-    az:     (( vault meta.vault_tf_path "/bosh/iaas/subnets/ocfp/0:availability_zone" ))
-    domain: (( vault meta.vault_tf_path "/net/shield:fqdn" ))
-    ca:     (( vault meta.vault "/certs/ca:certificate" ))
+    ip:     (( vault meta.ocfp.vault.tf "/bosh/iaas/subnets/ocfp/0/ips/mgmt/reserved:shield_ip" ))
+    az:     (( vault meta.ocfp.vault.tf "/bosh/iaas/subnets/ocfp/0:availability_zone" ))
+    domain: (( vault meta.ocfp.vault.tf "/net/shield:fqdn" ))
+    ca:     (( vault meta.vault         "/certs/ca:certificate" ))
 
     admin:
-      username: (( vault meta.vault_tf_path "/shield/admin:username" ))
-      password: (( vault meta.vault_tf_path "/shield/admin:password" ))
+      username: (( vault meta.ocfp.vault.tf "/shield/admin:username" ))
+      password: (( vault meta.ocfp.vault.tf "/shield/admin:password" ))
 
 
     url:        (( concat "https://" meta.shield.domain ))
-    disk_type:  (( concat "shield-" meta.env_scale ))
-    vm_type:    (( concat "shield-" meta.env_scale ))
-    network:    (( concat meta.env.name "-shield" ))
+    disk_type:  (( concat "shield-" meta.ocfp.env.scale ))
+    vm_type:    (( concat "shield-" meta.ocfp.env.scale ))
+    network:    (( concat genesis.env "-shield" ))
 
     agent:
       pub:      (( vault meta.vault "/agent:public" ))
