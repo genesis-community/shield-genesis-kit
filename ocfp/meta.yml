@@ -53,5 +53,5 @@ meta:
       key:      (( vault meta.vault "/vault/server:key" ))
 
     core:
-      name: (( concat meta.env.name "-shield" ))
+      name: (( concat genesis.env "-shield" ))
 
