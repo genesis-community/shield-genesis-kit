@@ -63,7 +63,7 @@ instance_groups:
               certificate: (( grab meta.vault.cert ))
               key:         (( grab meta.vault.key ))
           core:
-            env: (( grab meta.sheld.core.name ))
+            env: (( grab meta.shield.core.name ))
           failsafe:
             username: (( grab meta.shield.admin.username ))
             password: (( grab meta.shield.admin.password ))
