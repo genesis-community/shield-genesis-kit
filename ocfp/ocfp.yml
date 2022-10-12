@@ -8,7 +8,7 @@ params:
   external_domain: (( grab params.shield_static_ip ))
 
 exodus:
-  url:     (( grab meta.exodus.url ))
+  url:     (( grab genesis.exodus_mount ))
 
   ca_cert: (( grab meta.shield.ca ))
   pubkey:  (( grab meta.shield.agent.pub ))
