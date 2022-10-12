@@ -59,9 +59,9 @@ instance_groups:
             key:         (( grab meta.shield.server.key )) 
           vault:
             tls:
-              ca:          (( grab meta.vault.ca ))
-              certificate: (( grab meta.vault.cert ))
-              key:         (( grab meta.vault.key ))
+              ca:          (( grab meta.shield.vault.ca ))
+              certificate: (( grab meta.shield.vault.cert ))
+              key:         (( grab meta.shield.vault.key ))
           core:
             env: (( grab meta.shield.core.name ))
           failsafe:
