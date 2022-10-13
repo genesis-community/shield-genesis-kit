@@ -8,7 +8,7 @@ params:
   external_domain: (( grab params.shield_static_ip ))
 
 exodus:
-  url:     (( grab meta.exodus.url ))
+  url:     (( grab genesis.exodus_mount ))
 
   ca_cert: (( grab meta.shield.ca ))
   pubkey:  (( grab meta.shield.agent.pub ))
@@ -25,7 +25,7 @@ instance_groups:
     persistent_disk_type: (( grab meta.shield.disk_type ))
     vm_type:              (( grab meta.shield.vm_type ))
 
-    stemcell: bionic
+    stemcell: default
 
     networks:
       - name: (( grab meta.shield.network ))
@@ -41,9 +41,9 @@ instance_groups:
           core:
             ca: (( grab meta.shield.ca ))
           env:
-            http_proxy:  (( params.http_proxy  || "" ))
-            https_proxy: (( params.https_proxy || "" ))
-            no_proxy:    (( params.no_proxy    || "" ))
+            http_proxy:  (( grab params.http_proxy  || "" ))
+            https_proxy: (( grab params.https_proxy || "" ))
+            no_proxy:    (( grab params.no_proxy    || "" ))
 
       - name: core
         release: shield
@@ -59,11 +59,11 @@ instance_groups:
             key:         (( grab meta.shield.server.key )) 
           vault:
             tls:
-              ca:          (( grab meta.vault.ca ))
-              certificate: (( grab meta.vault.cert ))
-              key:         (( grab meta.vault.key ))
+              ca:          (( grab meta.shield.vault.ca ))
+              certificate: (( grab meta.shield.vault.cert ))
+              key:         (( grab meta.shield.vault.key ))
           core:
-            env: (( grab meta.sheld.core.name ))
+            env: (( grab meta.shield.core.name ))
           failsafe:
             username: (( grab meta.shield.admin.username ))
             password: (( grab meta.shield.admin.password ))
@@ -78,5 +78,5 @@ update:
 stemcells:
 - alias:   (( grab meta.stemcell.name ))
   os:      (( grab meta.stemcell.os   ))
-  version: (( grab meta.stemcell.name ))
+  version: (( grab meta.stemcell.version ))
 
