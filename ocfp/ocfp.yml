@@ -25,7 +25,7 @@ instance_groups:
     persistent_disk_type: (( grab meta.shield.disk_type ))
     vm_type:              (( grab meta.shield.vm_type ))
 
-    stemcell: bionic
+    #stemcell: bionic
 
     networks:
       - name: (( grab meta.shield.network ))
@@ -41,9 +41,9 @@ instance_groups:
           core:
             ca: (( grab meta.shield.ca ))
           env:
-            http_proxy:  (( params.http_proxy  || "" ))
-            https_proxy: (( params.https_proxy || "" ))
-            no_proxy:    (( params.no_proxy    || "" ))
+            http_proxy:  (( grab params.http_proxy  || "" ))
+            https_proxy: (( grab params.https_proxy || "" ))
+            no_proxy:    (( grab params.no_proxy    || "" ))
 
       - name: core
         release: shield
@@ -78,5 +78,5 @@ update:
 stemcells:
 - alias:   (( grab meta.stemcell.name ))
   os:      (( grab meta.stemcell.os   ))
-  version: (( grab meta.stemcell.name ))
+  version: (( grab meta.stemcell.version ))
 
