@@ -32,6 +32,10 @@ instance_groups:
         static_ips:
           - (( grab meta.shield.ip ))
 
+    vm_extensions:
+      - ((replace))
+      - ocfp-ocf-shield-lb-tg
+
     jobs:
       - name: shield-agent
         release: shield
