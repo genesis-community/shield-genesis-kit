@@ -25,7 +25,7 @@ instance_groups:
     persistent_disk_type: (( grab meta.shield.disk_type ))
     vm_type:              (( grab meta.shield.vm_type ))
 
-    #stemcell: bionic
+    stemcell: default
 
     networks:
       - name: (( grab meta.shield.network ))
