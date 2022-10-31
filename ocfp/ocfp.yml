@@ -34,7 +34,7 @@ instance_groups:
 
     vm_extensions:
       - ((replace))
-      - ocfp-ocf-shield-lb-tg
+      - shield-lb
 
     jobs:
       - name: shield-agent
