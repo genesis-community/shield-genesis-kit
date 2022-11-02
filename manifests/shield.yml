@@ -13,7 +13,7 @@ instance_groups:
   - name: shield
     instances: 1
     azs: [(( grab params.availability_zone || "z1" ))]
-    persistent_disk_type: (( grab params.shield_disk_pool || "shield" ))
+    persistent_disk_type: (( grab params.shield_disk_type || "shield" ))
     vm_type:              (( grab params.shield_vm_type   || "small"  ))
     stemcell: bionic
     networks:
