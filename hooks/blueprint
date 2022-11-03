@@ -1,11 +1,25 @@
 #!/bin/bash
+
 set -eu
 
 declare -a merge
 
-validate_features \
-  ocfp oauth oauth-provider \
-  proxy postgres-addon secure
+for want in ${GENESIS_REQUESTED_FEATURES}
+do
+  case ${want} in
+    (ocfp|oauth|oauth-provider|proxy|postgres-addon|secure)
+      true
+      ;;
+    (*)
+      if [[ -f "$GENESIS_ROOT/ops/$want.yml" ]] ; then
+        merge+=( "$GENESIS_ROOT/ops/$want.yml" )
+      else
+        echo "ERROR: Unsupported feature: ${want}"
+        exit 1
+      fi
+      ;;
+  esac
+done
 
 # ocfp feature here
 if want_feature "ocfp" ; then
