@@ -10,6 +10,9 @@ params:
 exodus:
   url:     (( grab genesis.exodus_mount ))
 
+  dashboard: (( grab meta.shield.domain )) 
+  agent_ip:  (( grab meta.shield.ip )) 
+
   ca_cert: (( grab meta.shield.ca ))
   pubkey:  (( grab meta.shield.agent.pub ))
 
