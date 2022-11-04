@@ -8,14 +8,12 @@ params:
   external_domain: (( grab params.shield_static_ip ))
 
 exodus:
-  url:     (( grab genesis.exodus_mount ))
-
-  dashboard: (( grab meta.shield.domain )) 
-  agent_ip:  (( grab meta.shield.ip )) 
-
-  ca_cert: (( grab meta.shield.ca ))
-  pubkey:  (( grab meta.shield.agent.pub ))
-
+  ca_cert:        (( grab meta.shield.ca ))
+  pubkey:         (( grab meta.shield.agent.pub ))
+  domain:         (( grab meta.shield.domain )) 
+  agent_ip:       (( grab meta.shield.ip )) 
+  dashboard_url:  (( concat "https://" meta.shield.domain )) 
+  api_url:        (( concat "https://" meta.shield.domain )) 
   admin_username: (( grab meta.shield.admin.username ))
   admin_password: (( grab meta.shield.admin.password ))
 
