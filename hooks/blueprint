@@ -49,10 +49,6 @@ fi
 
 want_feature oauth && merge+=( manifests/oauth.yml )
 
-for opsfile in "${opsfiles[@]}"
-do merge+=( "$opsfile" )
-done
-
 if want_feature oauth-provider; then
   echo >&2 "The oauth-provider feature flag is now just called 'oauth'."
   merge+=( "manifests/oauth.yml" )
@@ -62,5 +58,9 @@ if want_feature proxy; then
   echo >&2 "You no longer need to explicitly specify the 'proxy' feature."
   echo >&2 "If you remove it, everything will still work as expected."
 fi
+
+for opsfile in "${opsfiles[@]}"
+do merge+=( "$opsfile" )
+done
 
 echo "${merge[@]}"
