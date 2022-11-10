@@ -3,6 +3,7 @@
 set -eu
 
 declare -a merge
+declare -a opsfiles
 
 for want in ${GENESIS_REQUESTED_FEATURES}
 do
@@ -12,7 +13,7 @@ do
       ;;
     (*)
       if [[ -f "$GENESIS_ROOT/ops/$want.yml" ]] ; then
-        merge+=( "$GENESIS_ROOT/ops/$want.yml" )
+        opsfiles+=( "$GENESIS_ROOT/ops/$want.yml" )
       else
         echo "ERROR: Unsupported feature: ${want}"
         exit 1
@@ -48,7 +49,9 @@ fi
 
 want_feature oauth && merge+=( manifests/oauth.yml )
 
-# TODO: Add `ops/` file support here
+for opsfile in "${opsfiles[@]}"
+do merge+=( "$opsfile" )
+done
 
 if want_feature oauth-provider; then
   echo >&2 "The oauth-provider feature flag is now just called 'oauth'."
