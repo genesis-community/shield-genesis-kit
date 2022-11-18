@@ -2,62 +2,54 @@
 
 set -eu
 
-declare -a merge
-declare -a opsfiles
+declare -a merge opsfiles
 
 for want in ${GENESIS_REQUESTED_FEATURES}
 do
   case ${want} in
-    (ocfp|oauth|oauth-provider|proxy|postgres-addon|secure)
+    (ocfp|oauth|oauth-provider|proxy|postgres-addon|secure|okta)
       true
       ;;
     (*)
-      if [[ -f "$GENESIS_ROOT/ops/$want.yml" ]] ; then
-        opsfiles+=( "$GENESIS_ROOT/ops/$want.yml" )
-      else
-        echo "ERROR: Unsupported feature: ${want}"
-        exit 1
+      if [[ -f "$GENESIS_ROOT/ops/$want.yml" ]]
+      then opsfiles+=( "$GENESIS_ROOT/ops/$want.yml" )
+      else echo "ERROR: Unsupported feature: ${want}" ; exit 1
       fi
       ;;
   esac
 done
 
-# ocfp feature here
-if want_feature "ocfp" ; then
-  merge=( 
-    "ocfp/meta.yml"
-    "ocfp/ocfp.yml"
-    "manifests/releases/shield.yml"
-  )
-else
-  merge=( 
-    "manifests/shield.yml"
-    "manifests/releases/shield.yml"
-  )
+merge=( 
+  "manifests/shield.yml"
+  "manifests/releases/shield.yml"
+)
 
-  if want_feature postgres-addon ; then 
-    merge+=( 
-    "manifests/addons/postgres.yml"
-    "manifests/releases/shield-addon-postgres.yml"
-    )
-  fi
+want_feature postgres-addon && merge+=( 
+  "manifests/addons/postgres.yml"
+  "manifests/releases/shield-addon-postgres.yml"
+)
 
-  if want_feature secure ; then
-    merge+=( "manifests/addons/secure.yml" )
-  fi
-fi
+want_feature okta   && merge+=( "manifests/addons/okta.yml" )
+want_feature secure && merge+=( "manifests/addons/secure.yml" )
+want_feature oauth  && merge+=( "manifests/oauth.yml" )
 
-want_feature oauth && merge+=( manifests/oauth.yml )
-
-if want_feature oauth-provider; then
+if want_feature oauth-provider
+then
   echo >&2 "The oauth-provider feature flag is now just called 'oauth'."
   merge+=( "manifests/oauth.yml" )
 fi
 
-if want_feature proxy; then
+if want_feature proxy
+then
   echo >&2 "You no longer need to explicitly specify the 'proxy' feature."
   echo >&2 "If you remove it, everything will still work as expected."
 fi
+
+# ocfp feature overide everything except opsfiles.
+want_feature ocfp && merge+=( 
+  "ocfp/meta.yml"
+  "ocfp/ocfp.yml"
+)
 
 for opsfile in "${opsfiles[@]}"
 do merge+=( "$opsfile" )

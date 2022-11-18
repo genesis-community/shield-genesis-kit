@@ -9,12 +9,13 @@ else
   core_name=$(lookup params.installation 'S.H.I.E.L.D.')
 fi
 
-describe "" \
-         "#B${core_name}" \
-         "" \
-         "endpoint information" \
-         "  #C{$(exodus url)}" \
-         "" \
-         "admin credentials" \
-         "  username: #M{$(exodus admin_username)}" \
-         "  password: #G{$(exodus admin_password)}"
+describe \
+  "" \
+  "#B${core_name}" \
+  "" \
+  "endpoint information" \
+  "  #C{$(exodus url)}" \
+  "" \
+  "admin credentials" \
+  "  username: #M{$(exodus admin_username)}" \
+  "  password: #G{$(exodus admin_password)}"
