@@ -3,6 +3,9 @@
 set -eu
 
 declare -a merge opsfiles
+opsfiles=()
+ops_var='merge'
+want_feature "ocfp" && ops_var="opsfiles"
 
 for want in ${GENESIS_REQUESTED_FEATURES}
 do
@@ -12,7 +15,7 @@ do
       ;;
     (*)
       if [[ -f "$GENESIS_ROOT/ops/$want.yml" ]]
-      then opsfiles+=( "$GENESIS_ROOT/ops/$want.yml" )
+      then eval "$ops_var+=( \"$GENESIS_ROOT/ops/$want.yml\" )"
       else echo "ERROR: Unsupported feature: ${want}" ; exit 1
       fi
       ;;
@@ -51,8 +54,7 @@ want_feature ocfp && merge+=(
   "ocfp/ocfp.yml"
 )
 
-for opsfile in "${opsfiles[@]}"
-do merge+=( "$opsfile" )
-done
-
 echo "${merge[@]}"
+if (( ${#opsfiles[@]} > 0 ))
+then echo "${opsfiles[@]}"
+fi
