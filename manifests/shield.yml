@@ -4,8 +4,8 @@ params:
  
 exodus:
   url:          (( concat "https://" params.external_domain ))
-  ca:           (( vault meta.vault "/certs/ca:certificate" ))
-  agent_pubkey: (( vault meta.vault "/agent:public" ))
+  ca_cert:      (( vault meta.vault "/certs/ca:certificate" ))
+  pubkey:       (( vault meta.vault "/agent:public" ))
   admin_username: "admin"
   admin_password: "shield"
 
@@ -13,7 +13,7 @@ instance_groups:
   - name: shield
     instances: 1
     azs: [(( grab params.availability_zone || "z1" ))]
-    persistent_disk_type: (( grab params.shield_disk_type || "shield" ))
+    persistent_disk_type: (( grab params.shield_disk_type || params.shield_disk_pool || "shield" ))
     vm_type:              (( grab params.shield_vm_type   || "small"  ))
     stemcell: bionic
     networks:
