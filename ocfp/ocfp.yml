@@ -30,6 +30,7 @@ instance_groups:
     stemcell: default
 
     networks:
+      - (( replace ))
       - name: (( grab meta.shield.network ))
         static_ips:
           - (( grab meta.shield.ip ))
