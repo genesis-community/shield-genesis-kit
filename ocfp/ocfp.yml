@@ -87,7 +87,3 @@ stemcells:
   os:      (( grab meta.stemcell.os   ))
   version: (( grab meta.stemcell.version ))
 
----
-- type: remove
-  path: /instance_groups/name=shield/networks/0/static_ips
-
