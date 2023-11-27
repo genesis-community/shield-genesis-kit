@@ -12,17 +12,17 @@ genesis_version_min: 2.7.6
 certificates:
   base:
     certs:
-      ca: { valid_for: 1y }
+      ca: { valid_for: ${params.ca_validity_period} }
       server:
-        valid_for: 1y
-        names:
+        valid_for: ${params.cert_validity_period}
+      names:
           - 127.0.0.1
           - "${params.shield_static_ip}"
           - "${params.external_domain}"
     vault:
-      ca: { valid_for: 1y }
+      ca: { valid_for: ${params.ca_validity_period} }
       server:
-        valid_for: 1y
+        valid_for: ${params.cert_validity_period}
         names:
           - 127.0.0.1
 
