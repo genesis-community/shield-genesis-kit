@@ -1,13 +1,13 @@
 ---
 meta:
   kit:             shield
-  target:          cloudpipes/genesis
-  url:             https://cloudpipes.starkandwayne.com
-  iaas:            gcp
+  release:         Shield Genesis Kit
+  target:          pipes/genesis
+  url:             https://pipes.scalecf.net
+  iaas:            vsphere
   exposed:         false
   version_file:    version
-  initial_version: 1.13.0
-
+  initial_version: 0.0.4
   bosh:
     uri:      ((bosh.uri))
     username: ((bosh.username))
@@ -24,28 +24,29 @@ meta:
     token:     ((vault.token))
 
   aws:
-    access_key: ((aws.access_key_id))
-    secret_key: ((aws.secret_access_key))
+    access_key:  ((cloudfoundry-community-aws.access_key_id))
+    secret_key:  ((cloudfoundry-community-aws.secret_access_key))
 
   github:
     owner:        genesis-community
-    repo:         shield-genesis-kit
+    repo:         sheild-genesis-kit
     branch:       develop
     main-branch:  main
     private_key:  ((github.private_key))
     access_token: ((github.access_token))
 
   shout:
-    url:      ((shout.url)
+    url:      ((shout.url))
     username: ((shout.username))
     password: ((shout.password))
 
   upstream:
     bosh_releases:
-    - name:         shield
-      type:         bosh-io-release
-      path:         manifests/releases/shield.yml
-      repository:   starkandwayne/shield-boshrelease
+    - name:       shield
+      type:       github-release
+      repository: shieldproject/shield-boshrelease
+      path:       manifests/releases/shield.yml
+      access_token: ((github.access_token))
 
     - name:         shield-addon-postgres
       type:         github-release

@@ -2,8 +2,4 @@
 kit:
   name: dev
   version: latest
-  features:
-  - secure
-
-params:
-  admin_username: shield_admin
+  features: []
