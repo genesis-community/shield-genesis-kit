@@ -29,7 +29,7 @@ meta:
 
   github:
     owner:        genesis-community
-    repo:         sheild-genesis-kit
+    repo:         shield-genesis-kit
     branch:       develop
     main-branch:  main
     private_key:  ((github.private_key))
