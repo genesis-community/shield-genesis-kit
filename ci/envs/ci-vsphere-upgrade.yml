@@ -1,0 +1,12 @@
+---
+kit:
+  features:
+    - ((append))
+    - userpass
+    - tls
+
+genesis:
+  env:   ci-vsphere-upgrade
+
+params:
+  vm_type: small

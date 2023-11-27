@@ -45,7 +45,6 @@ if [[ ${#check_dirs[@]} -gt 0 ]] ; then
   echo "$out" | spruce merge | spruce json | "${CI_ROOT}/ci/scripts/check-sha1s"
 fi
 
-
 header "Building $KIT_SHORTNAME kit v$VERSION"
 genesis -C "$REPO_ROOT" compile-kit -v "$VERSION" -n "$KIT_SHORTNAME"
 
