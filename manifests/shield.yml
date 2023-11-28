@@ -1,7 +1,9 @@
 ---
 params:
   external_domain: (( grab params.shield_static_ip ))
- 
+  ca_validity_period: 10y
+  cert_validity_period: 1y
+
 exodus:
   url:          (( concat "https://" params.external_domain ))
   ca_cert:      (( vault meta.vault "/certs/ca:certificate" ))
