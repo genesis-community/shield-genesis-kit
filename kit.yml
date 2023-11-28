@@ -16,7 +16,7 @@ certificates:
         valid_for: ${params.ca_validity_period}
       server:
         valid_for: ${params.cert_validity_period}
-      names:
+        names:
           - 127.0.0.1
           - "${params.shield_static_ip}"
           - "${params.external_domain}"
