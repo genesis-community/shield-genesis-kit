@@ -3,6 +3,7 @@ exodus:
   admin_username: admin
   bosh: oauth
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
+  features: oauth
   is_director: false
   pubkey: <!{meta.vault}/agent:public!>
   url: https://10.99.0.16
