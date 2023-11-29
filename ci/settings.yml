@@ -8,6 +8,7 @@ meta:
   exposed:         false
   version_file:    version
   initial_version: 0.0.4
+  upgrade_group:   upgrade
   bosh:
     uri:      ((bosh.uri))
     username: ((bosh.username))

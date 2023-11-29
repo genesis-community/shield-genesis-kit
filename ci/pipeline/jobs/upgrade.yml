@@ -1,7 +1,7 @@
 jobs:
 - name: upgrade
   public: true
-  serial_groups: ['deployment']
+  serial_groups: [ (( grab meta.upgrade_group )) ]
   plan:
   - do:
     - in_parallel:

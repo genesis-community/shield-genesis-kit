@@ -19,6 +19,9 @@ meta:
   url:      (( param "Please specify the full url of the target Concourse CI" ))
   pipeline: (( grab meta.name ))
 
+  #override in setting.yml if no network confict  
+  upgrade_group: deployment
+
   # upstream:
   #   package:  example # dummy value for things that don't use upstream
   #   path:     (( grab meta.upstream.package ))

@@ -4,3 +4,6 @@ genesis:
 
 meta:
   _ip_prefix: "172.20."
+
+params:
+  availability_zones: [z1]
