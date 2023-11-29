@@ -3,5 +3,5 @@ genesis:
   env:   ci-vsphere-upgrade
 
 params:
-  shield_static_ip: 10.128.8.17
+  shield_static_ip: (( concat meta._ip_prefix "8.17" ))
   installation:     S.H.I.E.L.D. CI/CD
