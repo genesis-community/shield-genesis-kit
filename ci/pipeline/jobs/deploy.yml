@@ -1,7 +1,7 @@
 jobs:
 - name: deploy
   public: true
-  serial_groups: ['deployment'] # Remove if 'upgrade' has a different network
+  serial_groups: ['deployment']
   plan:
   - do:
     - in_parallel:
