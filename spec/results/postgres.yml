@@ -3,6 +3,7 @@ exodus:
   admin_username: admin
   bosh: postgres
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
+  features: postgres-addon
   is_director: false
   pubkey: <!{meta.vault}/agent:public!>
   url: https://10.99.0.16
