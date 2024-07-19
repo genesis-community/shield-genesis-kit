@@ -1,5 +1,5 @@
 releases:
 - name:    shield
-  version: 8.8.6
-  url:     https://github.com/shieldproject/shield-boshrelease/releases/download/v8.8.6/shield-8.8.6.tgz
-  sha1:    f58e1a37ebd66eb236aa11df3756e7af995117e0
+  version: 9.2.0-rc2
+  url:     https://github.com/shieldproject/shield-boshrelease/releases/download/v9.2.0-rc2/shield-boshrelease-9.2.0-rc2.tgz
+  sha1:    0748d4b4b209927bde1687c2c83e350a172d029b
