@@ -7,5 +7,5 @@ meta:
 
 stemcells:
  - alias: default
-   os: ubuntu-bionic
+   os: ubuntu-jammy
    version: 1.76
