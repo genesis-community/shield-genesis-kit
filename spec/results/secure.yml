@@ -60,9 +60,9 @@ instance_groups:
 name: secure-shield
 releases:
 - name: shield
-  sha1: f58e1a37ebd66eb236aa11df3756e7af995117e0
-  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v8.8.6/shield-8.8.6.tgz
-  version: 8.8.6
+  sha1: 3b59c76585efcf7dd32749b3e96c42544886dd72
+  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v9.2.0/shield-boshrelease-9.2.0.tgz
+  version: 9.2.0
 stemcells:
 - alias: bionic
   os: ubuntu-bionic
