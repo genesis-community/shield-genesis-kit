@@ -1,6 +1,6 @@
 ---
 #
-# ci/pipeline/base.yml
+# ci/pipeline.yml
 #
 # Pipeline structure file for a Genesis Release pipeline
 #
@@ -18,29 +18,27 @@ meta:
   target:   (( param "Please identify the name of the target Concourse CI" ))
   url:      (( param "Please specify the full url of the target Concourse CI" ))
   pipeline: (( grab meta.name ))
+  blocking_tests: []
 
-  #override in setting.yml if no network confict  
-  upgrade_group: deployment
-
-  # upstream:
-  #   package:  example # dummy value for things that don't use upstream
-  #   path:     (( grab meta.upstream.package ))
-  #   org:      cloudfoundry
-  #   repo:     (( concat meta.upstream.org "/" meta.upstream.package ))
-  #   url:      (( concat "https://github.com/" meta.upstream.repo ".git" ))
+  upstream:
+    manifest:
+      package:  ~
+      path:     (( grab meta.upstream.manifest.package ))
+      org:      cloudfoundry
+      repo:     (( concat meta.upstream.manifest.org "/" meta.upstream.manifest.package ))
+      url:      (( concat "https://github.com/" meta.upstream.manifest.repo ".git" ))
 
   vault:
     url:   (( param "Please provide the address of your Vault" ))
     token: (( param "Please provide a Vault Token" ))
 
   git:
-    email: genesis-ci@rubidiumstudios.com
-    name:  Genesis CI Bot
+    email: ((github.email))
+    name:  ((github.name))
 
   image:
-    name:  ((image/genesis.url))
-    tag:   ((image/genesis.tag))
- 
+    name: ((image/genesis.url))
+    tag:  ((image/genesis.tag))
 
   aws:
     bucket:      genesis-pipeline
@@ -84,25 +82,18 @@ meta:
     VAULT_TOKEN:          (( grab meta.vault.token ))
     INFRASTRUCTURE:       (( grab meta.iaas ))
 
-groups:
-  - name: (( grab meta.pipeline ))
-    jobs:
-    - build-kit
-    - spec-tests
-    - spec-check
-    - ship-prerelease
-    - deploy
-    - upgrade
-    - prepare
-    - ship-release
 
-  # - name: upstream
-  #   jobs:
-  #   - upstream-sync
-  
-   
-  - name: versions
-    jobs:
-    - major
-    - minor
-    - patch
+groups:
+- name: (( grab meta.pipeline ))
+  jobs:
+  - build-kit
+  - spec-check
+  - ship-prerelease
+  - prepare
+  - ship-release
+
+- name: versions
+  jobs:
+  - major
+  - minor
+  - patch

@@ -1,4 +1,11 @@
 ---
+kit:
+  ci:
+    job: upgrade
+    type: upgrade
+    serial_groups:
+    - upgrade
+
 genesis:
   env:   ci-vsphere-upgrade
 
