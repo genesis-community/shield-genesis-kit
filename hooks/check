@@ -3,10 +3,10 @@
 # Cloud Config checks
 if [[ -n "$GENESIS_CLOUD_CONFIG" ]] ; then
   if want_feature ocfp ; then
-    _env_scale="$(lookup --merged meta.ocfp.env.scale)"
-    _vm_type="shield-${_env_scale}"
-    _network="${GENESIS_ENVIRONMENT}-shield"
-    _disk_type="shield-${_env_scale}"
+    _env_scale="$(lookup --partial meta.ocfp.env.scale)"
+    _vm_type="$(lookup --partial meta.shield.vm_type)"
+    _network="$(lookup --partial meta.shield.network)"
+    _disk_type="$(lookup --partial meta.shield.disk_type)"
   else # Legacy was hard coded
     _vm_type="small"
     _network="shield"

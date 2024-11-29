@@ -5,7 +5,8 @@ meta:
       scale: (( grab params.ocfp_env_scale || "dev" ))
 
     vault:
-      tf: (( concat genesis.secrets_mount "tf/" genesis.vault_env ))
+      config_prefix: (( grab params.ocfp_vault_config_prefix || "config/" ))
+      config: (( concat genesis.ocfp_config_mount genesis.ocfp_env ))
 
     certs:
       trusted:
@@ -18,20 +19,20 @@ meta:
     version: (( grab params.stemcell_version || "latest" ))
 
   shield:
-    ip:     (( vault meta.ocfp.vault.tf "/bosh/iaas/subnets/ocfp/0/ips/ocf/reserved:shield_ip" ))
+    ip:     (( vault meta.ocfp.vault.config "/bosh/iaas/subnets/ocfp/0/ips/ocf/reserved:shield_ip" ))
     az:     (( concat genesis.env "-z1" ))
-    domain: (( vault meta.ocfp.vault.tf "/ocf/fqdns:shield" ))
+    domain: (( vault meta.ocfp.vault.config "/ocf/fqdns:shield" ))
     ca:     (( vault meta.vault         "/certs/ca:certificate" ))
 
     admin:
-      username: (( vault meta.ocfp.vault.tf "/shield/admin:username" ))
-      password: (( vault meta.ocfp.vault.tf "/shield/admin:password" ))
+      username: (( vault meta.ocfp.vault.config "/shield/admin:username" ))
+      password: (( vault meta.ocfp.vault.config "/shield/admin:password" ))
 
 
     url:        (( concat "https://" meta.shield.domain ))
-    disk_type:  (( concat "shield-" meta.ocfp.env.scale ))
-    vm_type:    (( concat "shield-" meta.ocfp.env.scale ))
-    network:    (( concat genesis.env "-shield" ))
+    disk_type:  (( concat genesis.env ".shield.disk-shield" ))
+    vm_type:    (( concat genesis.env ".shield.vm-shield" ))
+    network:    (( concat genesis.env ".shield.net-shield" ))
 
     agent:
       pub:      (( vault meta.vault "/agent:public" ))

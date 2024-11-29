@@ -1,13 +1,13 @@
 ---
 name: shield
-version: 1.9.0
+version: 1.12.4
 
 description:   S.H.I.E.L.D. Data Protection
 author: James Hunt <jhunt@starkandwayne.com>
 docs:   https://shieldproject.io/genesis
 code:   https://github.com/genesis-community/shield-genesis-kit
 
-genesis_version_min: 2.7.6
+genesis_version_min: 3.1.0-rc.9
 
 certificates:
   base:
