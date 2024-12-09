@@ -32,6 +32,6 @@ credentials:
   base:
     agent: ssh 2048 fixed
 
-  secure:
+  +failsafe:
     failsafe:
-      admin_password: random 24
+      admin_password: random 24 fixed

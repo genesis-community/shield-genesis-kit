@@ -1,6 +1,9 @@
 ---
+params:
+  admin_username: admin
+
 exodus:
-  admin_username: (( grab params.admin_username || "admin" ))
+  admin_username: (( grab params.admin_username ))
   admin_password: (( vault meta.vault "/failsafe:admin_password" ))
 
 instance_groups:
@@ -9,5 +12,5 @@ instance_groups:
   - name: core
     properties:
       failsafe:
-        username: (( grab params.admin_username || "admin" ))
+        username: (( grab params.admin_username ))
         password: (( vault meta.vault "/failsafe:admin_password" ))

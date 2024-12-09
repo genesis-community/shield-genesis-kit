@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -eu
+
+for want in ${GENESIS_REQUESTED_FEATURES}; do
+  echo "$want"
+done
+if want_feature 'ocfp' || want_feature 'secure'; then
+  echo "+failsafe"
+fi

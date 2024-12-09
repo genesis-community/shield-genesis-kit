@@ -2,14 +2,16 @@
 meta:
   ocfp:
     env:
-      scale: (( grab params.ocfp_env_scale || "dev" ))
+#      az:     (( grab params.availability_zones[0] || "z1" ))
+      subnet: (( grab params.ocfp_subnet || "ocfp-0" ))
 
     vault:
-      config_prefix: (( grab params.ocfp_vault_config_prefix || "config/" ))
-      config: (( concat genesis.ocfp_config_mount genesis.ocfp_env ))
+      config_slug:   (( grab params.ocfp_vault_config_slug || genesis.ocfp_env ))
+      config:        (( concat genesis.ocfp_config_mount meta.ocfp.vault.config_slug ))
 
     certs:
       trusted:
+        - (( append ))
         - (( vault genesis.secrets_mount "certs/org:ca" )) # Organization CA, if exists
         - (( vault genesis.secrets_mount "certs/dbs:ca" )) # External Databases CA
 
@@ -19,15 +21,10 @@ meta:
     version: (( grab params.stemcell_version || "latest" ))
 
   shield:
-    ip:     (( vault meta.ocfp.vault.config "/bosh/iaas/subnets/ocfp/0/ips/ocf/reserved:shield_ip" ))
+    ip:     (( vault meta.ocfp.vault.config "/vpc/subnets/" meta.ocfp.env.subnet "/reserved-ips:shield_ip" ))
     az:     (( concat genesis.env "-z1" ))
-    domain: (( vault meta.ocfp.vault.config "/ocf/fqdns:shield" ))
+    domain: (( vault meta.ocfp.vault.config "/fqdns:shield" ))
     ca:     (( vault meta.vault         "/certs/ca:certificate" ))
-
-    admin:
-      username: (( vault meta.ocfp.vault.config "/shield/admin:username" ))
-      password: (( vault meta.ocfp.vault.config "/shield/admin:password" ))
-
 
     url:        (( concat "https://" meta.shield.domain ))
     disk_type:  (( concat genesis.env ".shield.disk-shield" ))
