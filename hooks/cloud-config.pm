@@ -29,7 +29,7 @@ sub perform {
 			$self->network_definition('shield', strategy => 'ocfp',
 				dynamic_subnets => {
 					allocation => {
-						size => 1,
+						size => 0,
 					},
 					cloud_properties_for_iaas => {
 						openstack => {
@@ -53,8 +53,6 @@ sub perform {
 					},
 				},
 			}),
-		],
-		'disk_types' => [
 		],
 		'disk_types' => [
 			$self->disk_type_definition('shield',

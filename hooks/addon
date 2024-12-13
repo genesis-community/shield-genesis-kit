@@ -12,7 +12,7 @@ set -e
 # TODO: This should all be using exodus data, not vault and deployed manifest data
 
 was_deployed() {
-  test -f "${GENESIS_ROOT}/.genesis/manifest/${GENESIS_ENVIRONMENT}.yml"
+  test -f "${GENESIS_ROOT}/.genesis/manifests/${GENESIS_ENVIRONMENT}.yml"
 }
 
 shield_version() {

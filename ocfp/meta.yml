@@ -9,12 +9,12 @@ meta:
       config_slug:   (( grab params.ocfp_vault_config_slug || genesis.ocfp_env ))
       config:        (( concat genesis.ocfp_config_mount meta.ocfp.vault.config_slug ))
 
-    certs:
-      trusted:
-        - (( append ))
-        - (( vault genesis.secrets_mount "certs/org:ca" )) # Organization CA, if exists
-        - (( vault genesis.secrets_mount "certs/dbs:ca" )) # External Databases CA
-
+#    certs:
+#      trusted:
+#        - (( append ))
+#        - (( vault genesis.secrets_mount "certs/org:ca" )) # Organization CA, if exists
+#        - (( vault genesis.secrets_mount "certs/dbs:ca" )) # External Databases CA
+#
   stemcell:
     name:    (( grab params.stemcell_name    || "default" ))
     os:      (( grab params.stemcell_os      || "ubuntu-jammy" ))
