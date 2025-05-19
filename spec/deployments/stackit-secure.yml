@@ -1,0 +1,13 @@
+---
+kit:
+  features:
+    - secure
+
+genesis:
+  env: stackit-secure
+  iaas: stackit
+
+params:
+  shield_static_ip: 10.99.0.16
+  installation: S.H.I.E.L.D. Secure on STACKIT
+  admin_username: shield-admin

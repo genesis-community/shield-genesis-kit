@@ -36,5 +36,25 @@ var _ = Describe("Shield Kit", func() {
 			CloudConfig: "aws",
 			CPI:         "aws",
 		})
+		Test(Environment{
+			Name:        "stackit-base",
+			CloudConfig: "stackit",
+			CPI:         "stackit",
+		})
+		Test(Environment{
+			Name:        "stackit-secure",
+			CloudConfig: "stackit",
+			CPI:         "stackit",
+		})
+		Test(Environment{
+			Name:        "stackit-oauth",
+			CloudConfig: "stackit",
+			CPI:         "stackit",
+		})
+		Test(Environment{
+			Name:        "stackit-postgres",
+			CloudConfig: "stackit",
+			CPI:         "stackit",
+		})
 	})
 })

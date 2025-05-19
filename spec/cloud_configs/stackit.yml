@@ -1,0 +1,73 @@
+azs:
+- name: z1
+  cloud_properties:
+    availability_zone: az1
+- name: z2
+  cloud_properties:
+    availability_zone: az2
+- name: z3
+  cloud_properties:
+    availability_zone: az3
+
+vm_types:
+- name: default
+  cloud_properties:
+    instance_type: m1.medium
+    root_disk_size_gb: 25
+- name: small
+  cloud_properties:
+    instance_type: m1.small
+    root_disk_size_gb: 25
+- name: shield
+  cloud_properties:
+    instance_type: m1.medium
+    root_disk_size_gb: 50
+- name: test-vm-type
+  cloud_properties:
+    instance_type: m1.large
+    root_disk_size_gb: 100
+
+disk_types:
+- name: default
+  disk_size: 3000
+- name: shield
+  disk_size: 3000
+- name: test-disk-type
+  disk_size: 50000
+
+networks:
+- name: shield
+  type: manual
+  subnets:
+  - range: 10.99.0.0/16
+    gateway: 10.99.0.1
+    azs: [z1, z2, z3]
+    dns:
+    - 8.8.8.8
+    reserved: [ 10.99.0.1 - 10.99.0.15 ]
+    static: [ 10.99.0.16 - 10.99.0.30 ]
+    cloud_properties:
+      net_id: shield-network-id
+      security_groups: [default]
+- name: test-network
+  type: manual
+  subnets:
+  - range: 10.99.0.0/16
+    gateway: 10.99.0.1
+    azs: [z1, z2, z3]
+    dns:
+    - 8.8.8.8
+    reserved: [ 10.99.0.1 - 10.99.0.15 ]
+    static: [ 10.99.0.16 - 10.99.0.30 ]
+    cloud_properties:
+      net_id: test-network-id
+      security_groups: [default]
+- name: vip
+  type: vip
+
+compilation:
+  workers: 5
+  reuse_compilation_vms: true
+  az: z1
+  vm_type: default
+  network: shield

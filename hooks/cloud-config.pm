@@ -40,6 +40,10 @@ sub perform {
 							'net_id' => $self->network_reference('id'),
 							'security_groups' => ['default'],
 						},
+						stackit => {
+							'net_id' => $self->network_reference('id'),
+							'security_groups' => ['default'],
+						},
 					},
 				},
 			)
@@ -48,6 +52,16 @@ sub perform {
 			$self->vm_type_definition('shield',
 				cloud_properties_for_iaas => {
 					openstack => {
+						'instance_type' => $self->for_scale({
+							dev => 'm1.small',
+							prod => 'm1.medium'
+						}, 'm1.small'),
+						'boot_from_volume' => $self->TRUE,
+						'root_disk' => {
+							'size' => 32 # in gigabytes
+						},
+					},
+					stackit => {
 						'instance_type' => $self->for_scale({
 							dev => 'm1.small',
 							prod => 'm1.medium'
@@ -70,6 +84,9 @@ sub perform {
 				},
 				cloud_properties_for_iaas => {
 					openstack => {
+						'type' => 'storage_premium_perf6',
+					},
+					stackit => {
 						'type' => 'storage_premium_perf6',
 					},
 				},
