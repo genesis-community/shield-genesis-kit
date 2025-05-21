@@ -44,6 +44,9 @@ sub perform {
 							'net_id' => $self->network_reference('id'),
 							'security_groups' => ['default'],
 						},
+						aws => {
+							'subnet' => $self->network_reference('id'),
+						},
 					},
 				},
 			)
@@ -71,6 +74,23 @@ sub perform {
 							'size' => 32 # in gigabytes
 						},
 					},
+					aws => {
+						'instance_type' => $self->for_scale({
+							dev => 't3.medium',
+							prod => 'm6i.xlarge'
+						}, 't3.medium'),
+						'ephemeral_disk' => {
+							'encrypted' => $self->TRUE,
+							'size' => $self->for_scale({
+								dev => 4096,
+								prod => 16384
+							}, 4096),
+							'type' => 'gp3'
+						},
+						'metadata_options' => {
+							'http_tokens' => 'required'
+						},
+					},
 				},
 			),
 		],
@@ -88,6 +108,21 @@ sub perform {
 					},
 					stackit => {
 						'type' => 'storage_premium_perf6',
+					},
+					aws => {
+						'encrypted' => $self->TRUE,
+						'type' => 'gp3',
+					},
+				},
+			),
+		],
+		'vm_extensions' => [
+			$self->vm_extension_definition('shield-lb',
+				cloud_properties_for_iaas => {
+					aws => {
+						'lb_target_groups' => [
+							'ocfp-ocf-shield-lb-tg',
+						],
 					},
 				},
 			),
