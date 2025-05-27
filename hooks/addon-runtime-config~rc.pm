@@ -84,7 +84,7 @@ sub perform {
   $config .= "            no_proxy:    \"" . $self->env->lookup("params.no_proxy") . "\"\n\n";
 
   info($config);
-  return 1;
+  return $self->done();
 }
 
 sub shield_version {

@@ -45,7 +45,7 @@ sub perform {
     $self->exodus_data("admin_password")
   ));
 
-  return $self->done(1);
+  return $self->done();
 }
 
 1;

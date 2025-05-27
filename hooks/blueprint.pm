@@ -83,7 +83,7 @@ sub perform {
     }
   }
 
-	return 1;
+  return $self->done();
 }
 
 1;

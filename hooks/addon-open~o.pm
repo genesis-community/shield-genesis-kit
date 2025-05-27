@@ -46,7 +46,7 @@ sub perform {
   my $ip = $self->ip();
   system($cmd, "https://$ip");
 
-  return 1;
+  return $self->done();
 }
 
 sub ip {
