@@ -56,8 +56,8 @@ sub perform {
 				cloud_properties_for_iaas => {
 					openstack => {
 						'instance_type' => $self->for_scale({
-							dev => 'm1.small',
-							prod => 'm1.medium'
+							dev => 'm1.2',
+							prod => 'm1.3'
 						}, 'm1.small'),
 						'boot_from_volume' => $self->TRUE,
 						'root_disk' => {
