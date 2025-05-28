@@ -8,10 +8,7 @@ meta:
       config_prefix: (( grab params.ocfp_vault_config_prefix || "config/" ))
       config: (( concat genesis.ocfp_config_mount genesis.ocfp_env ))
 
-    certs:
-      trusted:
-        - (( vault genesis.secrets_mount "certs/org:ca" )) # Organization CA, if exists
-        - (( vault genesis.secrets_mount "certs/dbs:ca" )) # External Databases CA
+    # certs.trusted for Org and DBs woudl be added here
 
   stemcell:
     name:    (( grab params.stemcell_name    || "default" ))
@@ -19,9 +16,9 @@ meta:
     version: (( grab params.stemcell_version || "latest" ))
 
   shield:
-    ip:     (( vault meta.ocfp.vault.config "/bosh/iaas/subnets/ocfp/0/ips/ocf/reserved:shield_ip" ))
+    ip:     (( vault meta.ocfp.vault.config "/vpc/subnets/ocfp-0/reserved-ips:shield_ip" ))
     az:     (( concat genesis.env "-z1" ))
-    domain: (( vault meta.ocfp.vault.config "/ocf/fqdns:shield" ))
+    domain: (( vault meta.ocfp.vault.config "/fqdns:shield" ))
     ca:     (( vault meta.vault         "/certs/ca:certificate" ))
 
     admin:
