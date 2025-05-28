@@ -42,7 +42,7 @@ sub perform {
 						},
 						stackit => {
 							'net_id' => $self->network_reference('id'),
-							'security_groups' => ['default'],
+							'security_groups' => $self->network_reference('sgs', 'get_sgs_by_names', 'ocfp', 'default'),
 						},
 						aws => {
 							'subnet' => $self->network_reference('id'),
@@ -66,9 +66,9 @@ sub perform {
 					},
 					stackit => {
 						'instance_type' => $self->for_scale({
-							dev => 'm1.small',
-							prod => 'm1.medium'
-						}, 'm1.small'),
+							dev => 'm1.2',
+							prod => 'm1.2'
+						}, 'm1.2'),
 						'boot_from_volume' => $self->TRUE,
 						'root_disk' => {
 							'size' => 32 # in gigabytes
@@ -130,6 +130,13 @@ sub perform {
 	});
 
 	$self->done($config);
+}
+
+sub get_sgs_by_names {
+	my ($self, $subnet_data, $ref, @names) = @_;
+	my @ids = map {$subnet_data->{$ref}{$_}{id}} @names;
+	# TODO: Error checking
+	return \@ids
 }
 
 1;
