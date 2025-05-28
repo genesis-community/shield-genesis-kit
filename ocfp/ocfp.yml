@@ -37,7 +37,7 @@ instance_groups:
 
     vm_extensions:
       - ((replace))
-      - shield-lb
+        #      - shield-lb
 
     jobs:
       - name: shield-agent

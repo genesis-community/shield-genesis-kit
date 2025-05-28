@@ -24,45 +24,44 @@ sub perform {
 	my ($blueprint) = @_; # $blueprint is '$self'
 
 	$blueprint->add_files(qw(
-    "manifests/shield.yml"
-    "manifests/releases/shield.yml"
+          manifests/shield.yml
+          manifests/releases/shield.yml
 	));
 
   # Feature handling
   if ($blueprint->want_feature('postgres-addon')) {
     $blueprint->add_files(qw(
-      "manifests/addons/postgres.yml"
-      "manifests/releases/shield-addon-postgres.yml"
+      manifests/addons/postgres.yml
+      manifests/releases/shield-addon-postgres.yml
     ));
   }
 
   if ($blueprint->want_feature('okta')) {
-    $blueprint->add_files(qw("manifests/addons/okta.yml"));
+    $blueprint->add_files(qw(manifests/addons/okta.yml));
   }
 
   if ($blueprint->want_feature('secure')) {
-    $blueprint->add_files(qw("manifests/addons/secure.yml"));
+    $blueprint->add_files(qw(manifests/addons/secure.yml));
   }
 
   if ($blueprint->want_feature('oauth') || $blueprint->want_feature('oauth-provider')) {
     if ($blueprint->want_feature('oauth-provider')) {
       info("The oauth-provider feature flag is now just called 'oauth'.");
     }
-    $blueprint->add_files(qw("manifests/oauth.yml"));
+    $blueprint->add_files(qw(manifests/oauth.yml));
   }
 
   if ($blueprint->want_feature('proxy')) {
     info(
-      "\nYou no longer need to explicitly specify the 'proxy' feature.\n"
-      "\t=> If you remove it, everything will still work as expected.\n"
+      "\nYou no longer need to explicitly specify the 'proxy' feature.\n\t=> If you remove it, everything will still work as expected.\n"
     );
   }
 
   # ocfp feature overrides everything except ops files
   if ($blueprint->want_feature('ocfp')) {
     $blueprint->add_files(qw(
-      "ocfp/meta.yml"
-      "ocfp/ocfp.yml"
+      ocfp/meta.yml
+      ocfp/ocfp.yml
     ));
   }
 
@@ -83,7 +82,7 @@ sub perform {
     }
   }
 
-  return $self->done();
+  return $blueprint->done(1);
 }
 
 1;
