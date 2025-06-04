@@ -16,7 +16,7 @@ meta:
     version: (( grab params.stemcell_version || "latest" ))
 
   shield:
-    ip:     (( vault meta.ocfp.vault.config "/vpc/subnets/ocfp-0/reserved-ips:shield_ip" ))
+    ip:     (( vault meta.ocfp.vault.config "/net/subnets/ocfp-0/reserved-ips:shield_ip" ))
     az:     (( concat genesis.env "-z1" ))
     domain: (( vault meta.ocfp.vault.config "/fqdns:shield" ))
     ca:     (( vault meta.vault         "/certs/ca:certificate" ))

@@ -11,7 +11,6 @@ use lib $ENV{GENESIS_LIB} // "$ENV{HOME}/.genesis/lib";
 
 sub init {
   my $class = shift;
-  my $obj = $class->SUPER::init(@_);
   $obj->check_minimum_genesis_version('3.1.0-rc.20');
   return $obj;
 }
