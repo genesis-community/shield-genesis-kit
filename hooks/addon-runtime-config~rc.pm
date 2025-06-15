@@ -1,16 +1,16 @@
-#!/usr/bin/env perl
-# vim: set ts=2 sw=2 sts=2 foldmethod=marker
-package Genesis::Hook::Addon::Shield::RuntimeConfig v4.0.0;
+# vim: set ts=2 sw=2 sts=2 noet fdm=marker foldlevel=1:
+package Genesis::Hook::Addon::Shield::RuntimeConfig;
 
-use strict;
-use warnings;
-use v5.20; # Genesis min perl version is 5.20
+use v5.20;
+use warnings; # Genesis min perl version is 5.20
 use Genesis qw/bail info run/;
-use parent qw(Genesis::Hook::Addon);
-use lib $ENV{GENESIS_LIB} // "$ENV{HOME}/.genesis/lib";
+# Only needed for development
+BEGIN {push @INC, $ENV{GENESIS_LIB} ? $ENV{GENESIS_LIB} : $ENV{HOME}.'./.genesis/lib'}
 
+use parent qw(Genesis::Hook::Addon);
 sub init {
   my $class = shift;
+  my $obj = $class->SUPER::init(@_);
   $obj->check_minimum_genesis_version('3.1.0-rc.20');
   return $obj;
 }

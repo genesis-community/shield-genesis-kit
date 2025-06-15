@@ -1,16 +1,14 @@
-#!/usr/bin/env perl
-# vim: set ts=2 sw=2 sts=2 et:
-package Genesis::Hook::Info::Shield v4.0.0;
+# vim: set ts=2 sw=2 sts=2 noet fdm=marker foldlevel=1:
+package Genesis::Hook::Info::Shield;
 
-use strict;
-use warnings;
-use v5.20; # Genesis supports min perl v5.20.
+use v5.20;
+use warnings; # Genesis supports min perl v5.20.
 
 # Only needed for development
 BEGIN {push @INC, $ENV{GENESIS_LIB} ? $ENV{GENESIS_LIB} : $ENV{HOME}.'/.genesis/lib'}
 
 # Parent class inheritance
-use parent qw(Genesis::Hook);
+use parent qw(Genesis::Hook::Info);
 
 # Import required functions
 use Genesis qw/info/;
@@ -33,17 +31,17 @@ sub perform {
   }
 
   info(
-    "\n#B{%1}\n",
-    "endpoint information\n",
-    "\t#C{%2}\n",
-    "admin credentials\n",
-    "\tusername: #M{%3}\n",
-    "\tpassword: #G{%4}\n"
+    "\n#B{%s}\n".  
+    "endpoint information\n".  
+    "\t#C{%s}\n".  
+    "admin credentials\n".  
+    "\tusername: #M{%s}\n".  
+    "\tpassword: #G{%s}\n",
     $core_name,
     $self->exodus_data("url"),
     $self->exodus_data("admin_username"),
     $self->exodus_data("admin_password")
-  ));
+  );
 
   return $self->done();
 }
