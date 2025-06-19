@@ -1,4 +1,3 @@
-# vim: set ts=2 sw=2 sts=2 noet fdm=marker foldlevel=1:
 package Genesis::Hook::Info::Shield;
 
 use v5.20;
@@ -31,11 +30,11 @@ sub perform {
   }
 
   info(
-    "\n#B{%s}\n".  
-    "endpoint information\n".  
-    "\t#C{%s}\n".  
-    "admin credentials\n".  
-    "\tusername: #M{%s}\n".  
+    "\n#B{%s}\n".
+    "endpoint information\n".
+    "\t#C{%s}\n".
+    "admin credentials\n".
+    "\tusername: #M{%s}\n".
     "\tpassword: #G{%s}\n",
     $core_name,
     $self->exodus_data("url"),
@@ -47,3 +46,4 @@ sub perform {
 }
 
 1;
+# vim: set ts=2 sw=2 sts=2 noet fdm=marker foldlevel=1:
