@@ -26,11 +26,11 @@ sub perform {
   my $env = $self->env;
 
   # Parse options
-  my %options = $self->parse_options([
+  my $options = $self->parse_options([
     'vaultify',
   ]);
 
-  my $vaultify = $options{vaultify} ? 1 : 0;
+  my $vaultify = $options->{vaultify} ? 1 : 0;
 
   if (!$self->was_deployed()) {
     bail("",
@@ -77,9 +77,9 @@ sub perform {
   }
 
   $config .= "\n          env:\n";
-  $config .= "            http_proxy:  \"" . $self->env->lookup("params.http_proxy") . "\"\n";
-  $config .= "            https_proxy: \"" . $self->env->lookup("params.https_proxy") . "\"\n";
-  $config .= "            no_proxy:    \"" . $self->env->lookup("params.no_proxy") . "\"\n\n";
+  $config .= "            http_proxy:  \"" . ($self->env->lookup("params.http_proxy") || "") . "\"\n";
+  $config .= "            https_proxy: \"" . ($self->env->lookup("params.https_proxy") || "") . "\"\n";
+  $config .= "            no_proxy:    \"" . ($self->env->lookup("params.no_proxy") || "") . "\"\n\n";
 
   info($config);
   return $self->done();
