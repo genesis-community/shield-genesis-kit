@@ -18,7 +18,7 @@ sub cmd_details {
   return
   "Print out a BOSH runtime-config for setting up SHIELD agent as an add-on.\n".
   "Supports the following options:\n".
-  "[[  #y{--vaultify}        >>Keep secrets as vault operations for better security.\n";
+  "  #y{--vaultify}        Keep secrets as vault operations for better security.\n";
 }
 
 sub perform {
