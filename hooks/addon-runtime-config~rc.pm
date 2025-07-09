@@ -3,6 +3,7 @@ package Genesis::Hook::Addon::Shield::RuntimeConfig;
 use v5.20;
 use warnings; # Genesis min perl version is 5.20
 use Genesis qw/bail info run/;
+use Genesis::UI qw/prompt_for_boolean/;
 # Only needed for development
 BEGIN {push @INC, $ENV{GENESIS_LIB} ? $ENV{GENESIS_LIB} : $ENV{HOME}.'./.genesis/lib'}
 
@@ -39,7 +40,7 @@ sub perform {
   }
 
   my $shield_version = $self->shield_version();
-  my $ip = $self->ip();
+  my $shield_url = $self->shield_url();
 
   my $config = "releases:\n";
   $config .= "  - name:    shield\n";
@@ -52,7 +53,7 @@ sub perform {
   $config .= "      - name:    shield-agent\n";
   $config .= "        release: shield\n";
   $config .= "        properties:\n";
-  $config .= "          shield-url: https://$ip\n";
+  $config .= "          shield-url: $shield_url\n";
   $config .= "          require-shield-core: false\n\n";
   $config .= "          core:\n";
 
@@ -81,7 +82,21 @@ sub perform {
   $config .= "            https_proxy: \"" . ($self->env->lookup("params.https_proxy") || "") . "\"\n";
   $config .= "            no_proxy:    \"" . ($self->env->lookup("params.no_proxy") || "") . "\"\n\n";
 
+  my $config_name = sprintf(
+    "%s.%s.%s",
+    $self->env->name,
+    $self->env->type,
+    "agent"
+  );
+
   info($config);
+  if (prompt_for_boolean(
+    "Do you want to save this runtime-config as '$config_name'? [y|n]", 1
+  )) {
+    $self->env->bosh->upload_config($config,'runtime',$config_name);
+  } else {
+    info("Runtime config not uploaded.");
+  }
   return $self->done();
 }
 
@@ -95,26 +110,18 @@ sub shield_version {
     );
   }
 
-  return $self->env->lookup("--deployed", "releases[name=shield].version");
+  return $self->env->last_deployed_lookup("releases[name=shield].version");
 }
 
-sub ip {
+sub shield_url {
   my ($self) = @_;
-
-  if (!$self->was_deployed()) {
-    bail(
-      "\n#R{[ERROR]} No deployment found.\n".
-      "\tPlease run deploy on this environment before running any addons.\n"
-    );
-  }
-
-  return $self->env->lookup("--deployed", "params.shield_static_ip");
+  return $self->env->exodus_lookup("url");
 }
+
 
 sub was_deployed {
   my ($self) = @_;
-  # TODO: There is likely a Genesis function to check if the environment was deployed
-  return -f "$ENV{GENESIS_ROOT}/.genesis/manifest/$ENV{GENESIS_ENVIRONMENT}.yml";
+  $self->env->deployments->current_state eq "deployed";
 }
 
 1;
