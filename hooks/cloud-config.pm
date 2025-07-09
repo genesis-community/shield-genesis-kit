@@ -42,7 +42,7 @@ sub perform {
 							'security_groups' => $self->network_reference('sgs', 'get_sgs_by_names', 'ocfp', 'default'),
 						},
 						aws => {
-							'subnet' => $self->network_reference('id'),
+							'subnet' => $self->subnet_reference('id'),
 						},
 					},
 				},
@@ -114,8 +114,7 @@ sub perform {
 			),
 		],
 		'vm_extensions' => [
-			$self->vm_extension_definition('shield-lb',
-				cloud_properties_for_iaas => {
+			$self->vm_extension_definition('shield-lb' => {
 					aws => {
 						'lb_target_groups' => [
 							'ocfp-ocf-shield-lb-tg',
