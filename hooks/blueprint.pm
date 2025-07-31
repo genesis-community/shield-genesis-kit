@@ -60,19 +60,19 @@ sub perform {
       ocfp/meta.yml
       ocfp/ocfp.yml
     ));
+    # Add IaaS-specific files if needed
+    my $iaas = $blueprint->iaas;
+    $blueprint->add_files_if_exists(
+            "ocfp/$iaas/base.yml"
+    )
   }
 
   # Add any ops files
   for my $feature ($blueprint->features) {
     if (!grep {$_ eq $feature} qw(ocfp oauth oauth-provider proxy postgres-addon secure okta)) {
-      my $ops_file = "ops/$feature.yml";
-      if (-f $blueprint->env->path($ops_file)) {
-        if ($blueprint->want_feature('ocfp')) {
-          # For OCFP, we need to handle ops files differently
-          $blueprint->add_opsfile($ops_file);
-        } else {
+      my $ops_file = $blueprint->env->path("ops/$feature.yml");
+      if (-f $ops_file) {
           $blueprint->add_files($ops_file);
-        }
       } else {
         bail("Unsupported feature: %s", $feature);
       }

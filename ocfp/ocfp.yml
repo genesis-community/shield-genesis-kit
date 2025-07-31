@@ -35,10 +35,6 @@ instance_groups:
         static_ips:
           - (( grab meta.shield.ip ))
 
-    vm_extensions:
-      - ((replace))
-        #      - shield-lb
-
     jobs:
       - name: shield-agent
         release: shield

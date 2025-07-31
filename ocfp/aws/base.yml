@@ -1,0 +1,6 @@
+instance_groups:
+- name: shield
+  vm_extensions:
+    - ((replace))
+    - shield-lb
+
