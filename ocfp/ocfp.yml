@@ -19,7 +19,6 @@ exodus:
 
 instance_groups:
   - name: shield
-    persistent_disk_type: (( concat "shield-" meta.ocfp.env.scale ))
     instances: 1
     azs:
       - (( grab meta.shield.az ))

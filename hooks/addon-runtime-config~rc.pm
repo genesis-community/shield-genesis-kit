@@ -49,6 +49,10 @@ sub perform {
   $config .= "  vault: \"$ENV{GENESIS_SECRETS_BASE}\"\n\n";
   $config .= "addons:\n";
   $config .= "  - name: shield-agent\n";
+  $config .= "    exclude:\n";
+  $config .= "      jobs:\n";
+  $config .= "      - name:    shield-agent\n";
+  $config .= "        release: shield\n";
   $config .= "    jobs:\n";
   $config .= "      - name:    shield-agent\n";
   $config .= "        release: shield\n";
