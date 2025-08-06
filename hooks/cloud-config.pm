@@ -79,7 +79,7 @@ sub perform {
 						'ephemeral_disk' => {
 							'encrypted' => $self->TRUE,
 							'size' => $self->for_scale({
-								dev => 4096,
+								dev => 8192,
 								prod => 16384
 							}, 4096),
 							'type' => 'gp3'
