@@ -1,4 +1,4 @@
-package Genesis::Hook::PostDeploy::Shield;
+package Genesis::Hook::PostDeploy::Shield v2.0.0;
 
 use v5.20;
 use warnings; # Genesis min perl version is 5.20
