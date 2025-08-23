@@ -7,7 +7,7 @@ author: James Hunt <jhunt@starkandwayne.com>
 docs:   https://shieldproject.io/genesis
 code:   https://github.com/genesis-community/shield-genesis-kit
 
-genesis_version_min: 3.1.0-rc27
+genesis_version_min: 3.1.0
 
 supports:
 - aws
