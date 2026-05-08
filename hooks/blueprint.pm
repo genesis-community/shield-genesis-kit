@@ -1,4 +1,4 @@
-package Genesis::Hook::Blueprint::Shield v2.0.0;
+package Genesis::Hook::Blueprint::Shield v2.0.1;
 
 use v5.20;
 use warnings;

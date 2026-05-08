@@ -1,4 +1,4 @@
-package Genesis::Hook::New::Shield v2.0.0;
+package Genesis::Hook::New::Shield v2.0.1;
 
 use v5.20;
 use warnings; # Genesis supports min perl v5.20.
