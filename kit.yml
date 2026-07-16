@@ -16,6 +16,7 @@ supports:
 - openstack
 - stackit
 - vsphere
+- pve
 
 certificates:
   base:

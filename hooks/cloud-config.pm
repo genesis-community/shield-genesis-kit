@@ -44,6 +44,9 @@ sub perform {
 						aws => {
 							'subnet' => $self->subnet_reference('id'),
 						},
+						pve => {
+							'bridge' => scalar($self->env->lookup('bosh-configs.cpi.pve_network_bridge', 'lvnet001')),
+						},
 					},
 				},
 			)
@@ -88,6 +91,12 @@ sub perform {
 							'http_tokens' => 'required'
 						},
 					},
+					pve => {
+						'cpu'            => scalar($self->env->lookup('bosh-configs.cpi.pve_shield_cpu',  $self->for_scale({ dev => 2, prod => 4 }, 2))),
+						'ram'            => scalar($self->env->lookup('bosh-configs.cpi.pve_shield_ram',  $self->for_scale({ dev => 4096, prod => 8192 }, 4096))),
+						'disk'           => scalar($self->env->lookup('bosh-configs.cpi.pve_shield_disk', $self->for_scale({ dev => 32768, prod => 65536 }, 32768))),
+						'network_bridge' => scalar($self->env->lookup('bosh-configs.cpi.pve_network_bridge', 'lvnet001')),
+					},
 				},
 			),
 		],
@@ -109,6 +118,10 @@ sub perform {
 					aws => {
 						'encrypted' => $self->TRUE,
 						'type' => 'gp3',
+					},
+					pve => {
+						'storage'     => scalar($self->env->lookup('bosh-configs.cpi.pve_disk_storage', 'zfs-1')),
+						'disk_format' => scalar($self->env->lookup('bosh-configs.cpi.pve_disk_format', 'raw')),
 					},
 				},
 			),
