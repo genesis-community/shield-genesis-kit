@@ -63,7 +63,7 @@ releases:
   version: 9.2.0
 stemcells:
 - alias: bionic
-  os: ubuntu-jammy
+  os: ubuntu-noble
   version: latest
 update:
   canaries: 0

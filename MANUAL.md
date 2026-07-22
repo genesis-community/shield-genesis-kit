@@ -36,7 +36,7 @@ The **SHIELD Genesis Kit** deploys the SHIELD Cloud Data Protection suite, allow
 
 - `shield_network` - What network to deploy SHIELD into. This network must be defined in your cloud config. Defaults to `shield`.
 
-- `stemcell_os` - The operating system you want to deploy SHIELD on. This defaults to `ubuntu-jammy`.
+- `stemcell_os` - The operating system you want to deploy SHIELD on. This defaults to `ubuntu-noble`.
 
 - `stemcell_version` - The version of the stemcell to deploy. Defaults to `latest`, which is usually what you want.
 
