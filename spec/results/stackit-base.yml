@@ -4,8 +4,11 @@ exodus:
   bosh: stackit-base
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
   features: ""
+  iaas: null
   is_director: false
   pubkey: <!{meta.vault}/agent:public!>
+  scale: null
+  services: null
   url: https://10.99.0.16
   use_create_env: false
 instance_groups:
@@ -57,9 +60,9 @@ instance_groups:
 name: stackit-base-shield
 releases:
 - name: shield
-  sha1: 3b59c76585efcf7dd32749b3e96c42544886dd72
-  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v9.2.0/shield-boshrelease-9.2.0.tgz
-  version: 9.2.0
+  sha1: e1bdc84bedf6741d544a61506cb5e02221af97cd
+  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v9.3.1/shield-boshrelease-9.3.1.tgz
+  version: 9.3.1
 stemcells:
 - alias: bionic
   os: ubuntu-jammy
