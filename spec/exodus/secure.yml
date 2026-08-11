@@ -1,0 +1,6 @@
+secret/exodus/secure/bosh:
+  url: https://bosh.lab.example.com:25555
+  admin_username: admin
+  admin_password: password
+  ca_cert: "bosh-ca-cert"
+  kit_name: bosh
