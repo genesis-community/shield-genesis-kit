@@ -3,9 +3,8 @@ params:
   admin_username:   (( grab meta.shield.admin.username ))
   external_domain:  (( grab meta.shield.domain ))
 
-  # These two required by `check`:
+  # Required by `check`:
   shield_static_ip: (( grab meta.shield.ip ))
-  external_domain: (( grab params.shield_static_ip ))
 
 exodus:
   ca_cert:        (( grab meta.shield.ca ))
