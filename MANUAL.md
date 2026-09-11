@@ -86,6 +86,8 @@ params:
 
 - `runtime-config` - Generate a good starting point configuration for deploying the SHIELD agent via BOSH as an addon.
 
+  The addon prints the runtime config and then asks whether to upload it. Pass `--yes`, or its short form `-y`, to upload without being asked. Setting `BOSH_NON_INTERACTIVE` does the same thing. Use one of them whenever the addon runs in a pipeline, because a prompt written there is invisible and nobody can answer it. Pass `--no-upload` when we only want to read the config. Pass `--vaultify` to keep the CA certificate and the agent key as vault operators rather than literal values.
+
 ## Examples
 
 ### Basic Deployment with Custom Cloud Config Types

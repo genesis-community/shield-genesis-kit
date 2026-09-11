@@ -3,6 +3,7 @@ package Genesis::Hook::Addon::Shield::RuntimeConfig v2.1.0;
 use v5.20;
 use warnings; # Genesis min perl version is 5.20
 use Genesis qw/bail info run/;
+use Genesis::State qw/envset/;
 use Genesis::UI qw/prompt_for_boolean/;
 # Only needed for development
 BEGIN {push @INC, $ENV{GENESIS_LIB} ? $ENV{GENESIS_LIB} : $ENV{HOME}.'./.genesis/lib'}
@@ -19,7 +20,13 @@ sub cmd_details {
   return
   "Print out a BOSH runtime-config for setting up SHIELD agent as an add-on.\n".
   "Supports the following options:\n".
-  "  #y{--vaultify}        Keep secrets as vault operations for better security.\n";
+  "  #y{--vaultify}        Keep secrets as vault operations for better security.\n".
+  "  #y{--yes}, #y{-y}         Upload the runtime-config without asking first.\n".
+  "                    Use this in a pipeline, where nobody can see the prompt\n".
+  "                    or answer it.  Setting the #y{BOSH_NON_INTERACTIVE}\n".
+  "                    environment variable does the same thing.\n".
+  "  #y{--no-upload}       Print the runtime-config and stop, without uploading it\n".
+  "                    and without asking.\n";
 }
 
 sub perform {
@@ -29,9 +36,20 @@ sub perform {
   # Parse options
   my $options = $self->parse_options([
     'vaultify',
+    'yes|y',
+    'no-upload',
   ]);
 
   my $vaultify = $options->{vaultify} ? 1 : 0;
+  my $no_upload = $options->{'no-upload'} ? 1 : 0;
+  # Assume yes when asked to, and when the caller has already told BOSH not to
+  # ask, because a prompt in a pipeline is invisible and cannot be answered.
+  my $assume_yes = ($options->{yes} || envset('BOSH_NON_INTERACTIVE')) ? 1 : 0;
+
+  bail(
+    "\n#R{[ERROR]} --yes and --no-upload contradict each other.\n".
+    "\tPick one, or neither to be asked.\n"
+  ) if $assume_yes && $no_upload;
 
   if (!$self->was_deployed()) {
     bail("",
@@ -65,9 +83,7 @@ sub perform {
     $config .= "            ca: (( vault meta.vault \"certs/ca:certificate\" ))\n";
   } else {
     $config .= "            ca: |\n";
-    my ($ca_cert) = $self->vault->get("$ENV{GENESIS_SECRETS_BASE}certs/ca:certificate");
-    $ca_cert =~ s/^/              /mg;
-    $config .= $ca_cert . "\n";
+    $config .= $self->indented_secret("certs/ca:certificate") . "\n";
   }
 
   $config .= "\n          agent:\n";
@@ -76,9 +92,7 @@ sub perform {
     $config .= "            key: (( vault meta.vault \"agent:public\" ))\n";
   } else {
     $config .= "            key: |\n";
-    my ($agent_public) = $self->vault->get("$ENV{GENESIS_SECRETS_BASE}agent:public");
-    $agent_public =~ s/^/              /mg;
-    $config .= $agent_public . "\n";
+    $config .= $self->indented_secret("agent:public") . "\n";
   }
 
   $config .= "\n          env:\n";
@@ -94,14 +108,40 @@ sub perform {
   );
 
   info($config);
-  if (prompt_for_boolean(
+
+  if ($no_upload) {
+    info("Runtime config not uploaded.");
+    return $self->done();
+  }
+
+  my $upload = $assume_yes || prompt_for_boolean(
     "Do you want to save this runtime-config as '$config_name'? [y|n]", 1
-  )) {
+  );
+
+  if ($upload) {
     $self->env->bosh->upload_config($config,'runtime',$config_name);
   } else {
     info("Runtime config not uploaded.");
   }
   return $self->done();
+}
+
+# indented_secret - a vault value, ready to sit under a YAML literal block
+#
+# The value read from vault carries a trailing newline, and a literal block that
+# ends on a bare indent renders as trailing blank lines in the runtime config, so
+# trim the trailing whitespace before indenting each line.
+sub indented_secret {
+  my ($self, $path) = @_;
+  my ($value) = $self->vault->get("$ENV{GENESIS_SECRETS_BASE}$path");
+  bail(
+    "\n#R{[ERROR]} No value found in the vault at '#C{%s%s}'.\n".
+    "\tPlease run #G{genesis check-secrets} on this environment.\n",
+    $ENV{GENESIS_SECRETS_BASE}, $path
+  ) unless defined($value) && $value =~ /\S/;
+  $value =~ s/\s+\z//;
+  $value =~ s/^/              /mg;
+  return $value;
 }
 
 sub shield_version {
