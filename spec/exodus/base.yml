@@ -2,5 +2,27 @@ secret/exodus/base/bosh:
   url: https://bosh.lab.example.com:25555
   admin_username: admin
   admin_password: password
-  ca_cert: "bosh-ca-cert"
+  # A throwaway self-signed CA, never used to trust anything. The BOSH CLI
+  # reads this value as BOSH_CA_CERT and rejects anything that is neither a
+  # PEM nor a readable file, which fails every spec before it renders.
+  ca_cert: |
+    -----BEGIN CERTIFICATE-----
+    MIIDFzCCAf+gAwIBAgIUMucYdp5CxznDkVto+wHrcHF95+UwDQYJKoZIhvcNAQEL
+    BQAwGjEYMBYGA1UEAwwPdGVzdGtpdC1ib3NoLWNhMCAXDTI2MDkxMTIwNDYyNVoY
+    DzIxMjYwODE4MjA0NjI1WjAaMRgwFgYDVQQDDA90ZXN0a2l0LWJvc2gtY2EwggEi
+    MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDni/lrmCbZAhDqZzjF2ytB0Mgb
+    3MbqRUnLVDvz7EzlxE5MYTuLMgRbjVAQwiRUaTl6Mun+wWzhUQJIVIeyF0bGC+NK
+    XHxmWxcXk0MQV6WCxErk6/HpM0YQKRSV8gP5S/5ePCZF+VZxOTKyyKfeJgwgKS3o
+    PqO5TfWiEkuFGLODNiA6zGQioWH3JheMsGcCWfM/WY9dIcdCuJUdWphParZakU+7
+    9cy8Z0sMSzBlEvtg19yjZGOtikHpUT5SuWfy4VeP+yuu6OLTvAJHYSpBIQsOX7ON
+    abWca42a8fyILSzmRXVEJ+0cgMPez7z6oe6hF5EZXk2JDY6vB2lDmN6YDr1/AgMB
+    AAGjUzBRMB0GA1UdDgQWBBQRH6bJnkfgacKY3piLSkCWLMlL7jAfBgNVHSMEGDAW
+    gBQRH6bJnkfgacKY3piLSkCWLMlL7jAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3
+    DQEBCwUAA4IBAQANFvAR9NbJsV6oyv6P7bQHEytB1h+fLQHdMSw+DgWcHDQIVv6l
+    DPt9dHKJXEknCU9PgKIJl8xDMzbwEdpq0sasfur1wLFVtpc9+A/Mmal6vpmO1Tqu
+    JiccmmQyAmLf9Sc4vZH0uvUicdNZiqG+3M+y9fhGW8vdLYC9ykfq/va4Udyz1jd9
+    vq+uqV1c39digu7KY2ZL2+LD2BwbrxHn70EEOVVgILJpqk9opj4Rb+Ig0pftr22R
+    IEZ00q39SVzuvEWXbt3E6yLRdbayIpIGJV/PUMsnRH5P/076j44N53VLP6wCOtTb
+    K9IgW0erQQK2/9NnzAZXaUm4Z3sSVgk3T//U
+    -----END CERTIFICATE-----
   kit_name: bosh
