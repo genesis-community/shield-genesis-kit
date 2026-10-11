@@ -1,0 +1,42 @@
+azs:
+- name: resolute-mgmt-z1
+  cloud_properties:
+    availability_zone: us-east-1a
+
+vm_types:
+- name: resolute-mgmt.shield.vm-shield
+  cloud_properties:
+    instance_type: m5.large
+    ephemeral_disk: {size: 25_000}
+- name: default
+  cloud_properties:
+    instance_type: m5.large
+    ephemeral_disk: {size: 25_000}
+
+disk_types:
+- name: resolute-mgmt.shield.disk-shield
+  disk_size: 50_000
+- name: default
+  disk_size: 3000
+
+networks:
+- name: resolute-mgmt.shield.net-shield
+  type: manual
+  subnets:
+  - range:    10.0.2.0/24
+    gateway:  10.0.2.1
+    azs:      [resolute-mgmt-z1]
+    dns:      [8.8.8.8]
+    reserved: [10.0.2.1 - 10.0.2.195]
+    static:   [10.0.2.196 - 10.0.2.198]
+    cloud_properties:
+      subnet: subnet-aaa
+- name: vip
+  type: vip
+
+compilation:
+  workers: 5
+  reuse_compilation_vms: true
+  az: resolute-mgmt-z1
+  vm_type: default
+  network: resolute-mgmt.shield.net-shield

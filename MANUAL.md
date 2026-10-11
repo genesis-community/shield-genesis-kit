@@ -60,6 +60,8 @@ The **SHIELD Genesis Kit** deploys the SHIELD Cloud Data Protection suite, allow
 
 - `okta` - Enables Okta authentication integration. Requires credentials to be stored in the vault.
 
+- `resolute` - **Experimental.** Deploys on the ubuntu-resolute stemcell instead of ubuntu-noble. See [Ubuntu Resolute Stemcells](#ubuntu-resolute-stemcells).
+
 ## Cloud Provider Support
 
 This kit has been tested with the following IaaS providers:
@@ -79,6 +81,33 @@ params:
   shield_disk_pool: shield # should be at least 1GB
   shield_vm_type:   small # VMs should have at least 1 CPU, and 1GB of memory
 ```
+
+## Ubuntu Resolute Stemcells
+
+The kit deploys SHIELD on ubuntu-noble stemcells unless we ask for something else. Adding the `resolute` feature moves the shield instance group onto ubuntu-resolute.
+
+```yaml
+kit:
+  features:
+  - resolute
+
+params:
+  stemcell_version: "0.184"
+```
+
+The feature is experimental, so we recommend trying it on a canary SHIELD before we point anything real at it. It sets the stemcell `os` to `ubuntu-resolute`, and `stemcell_version` still selects the version, which defaults to `latest`. We pin it to a resolute version such as `"0.184"`, so that the environment stays on a known resolute build when a newer stemcell is uploaded. The feature works the same with or without `ocfp`. Because the feature owns the stemcell os, an environment that sets `params.stemcell_os` to anything else is refused. An environment that sets `params.stemcell_os` to `ubuntu-resolute` without the feature is refused as well.
+
+Resolute ships without runit, so the `chpst` command is missing. The SHIELD release calls `chpst` in the control scripts that do not run under bpm, which means shieldd, its vault, and shield-agent cannot start on resolute. Every release up to and including 9.4.0, which is the version this kit pins by default, has the problem.
+
+For that reason the feature pins SHIELD 9.4.1, the first final release that replaces `chpst` with `setpriv`, and it uses that release in place of the pinned one for the environments that turn the feature on. Noble deployments keep the pinned release, and the environment file needs no extra parameters.
+
+The shield-agent job comes from the same release, so the pin covers it. The `runtime-config` addon reads the SHIELD version from the last deployment, which means the agent that it installs on other deployments follows the pinned 9.4.1 release. The director must therefore have that release uploaded before we upload that runtime config.
+
+The kit does not deploy the bpm release, so unlike other kits there is no bpm pin to add. Before the first deploy we need to do two things on the director:
+
+- Upload the resolute stemcell to the director that deploys SHIELD, since both the compilation VMs and the instances need it.
+
+- Make sure the director's runtime config carries bosh-dns 1.39.31 or later. Earlier bosh-dns releases do not run on resolute.
 
 ## Available Addons
 

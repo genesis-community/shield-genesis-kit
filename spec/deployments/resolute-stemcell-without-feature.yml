@@ -1,0 +1,13 @@
+---
+kit:
+  name: dev
+  version: latest
+  features: []
+
+genesis:
+  env:   resolute-stemcell-without-feature
+
+params:
+  shield_static_ip: 10.99.0.16
+  installation:     S.H.I.E.L.D. CI/CD
+  stemcell_os:      ubuntu-resolute
