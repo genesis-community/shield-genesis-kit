@@ -67,9 +67,29 @@ sub perform {
     )
   }
 
+  # Ubuntu resolute stemcells (opt-in; the default stays ubuntu-noble).  Added
+  # after every other fragment so that it wins over the stemcell default.
+  if ($blueprint->want_feature('resolute')) {
+    my $env = $blueprint->env;
+    my $stemcell_os = $env->lookup('params.stemcell_os', 'ubuntu-resolute');
+    bail(
+      "The #c{resolute} feature sets the stemcell os to ubuntu-resolute, but " .
+      "the environment sets #c{params.stemcell_os} to #R{%s}.  " .
+      "Remove that parameter.", $stemcell_os
+    ) if $stemcell_os ne 'ubuntu-resolute';
+
+    $blueprint->add_files('manifests/resolute.yml');
+  } elsif ($blueprint->env->lookup('params.stemcell_os', 'ubuntu-noble') eq 'ubuntu-resolute') {
+    bail(
+      "The environment sets #c{params.stemcell_os} to ubuntu-resolute " .
+      "without the #c{resolute} feature.  Enable the feature and remove " .
+      "that parameter."
+    );
+  }
+
   # Add any ops files
   for my $feature ($blueprint->features) {
-    if (!grep {$_ eq $feature} qw(ocfp oauth oauth-provider proxy postgres-addon secure okta)) {
+    if (!grep {$_ eq $feature} qw(ocfp oauth oauth-provider proxy postgres-addon secure okta resolute)) {
       my $ops_file = $blueprint->env->path("ops/$feature.yml");
       if (-f $ops_file) {
           $blueprint->add_files($ops_file);

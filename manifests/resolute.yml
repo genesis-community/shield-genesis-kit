@@ -1,0 +1,19 @@
+---
+# Ubuntu resolute stemcell.
+#
+# Loaded last by the resolute feature so that it wins over the ubuntu-noble
+# default.  The stemcell version still comes from params.stemcell_version.
+#
+# Shield releases up to 9.4.0 call chpst, which resolute does not ship.  The
+# 9.4.1 release replaces chpst with setpriv, so the feature pins it here and
+# spruce merges the entry over the pin in releases/shield.yml by name.  The
+# kit does not deploy bpm, so there is no bpm pin here.
+
+params:
+  stemcell_os: ubuntu-resolute
+
+releases:
+- name:    shield
+  version: 9.4.1
+  url:     https://github.com/shieldproject/shield-boshrelease/releases/download/v9.4.1/shield-boshrelease-9.4.1.tgz
+  sha1:    d49459b1773f598049806ff8c3dbd99eb6bec754
