@@ -60,9 +60,9 @@ instance_groups:
 name: resolute-shield
 releases:
 - name: shield
-  sha1: d49459b1773f598049806ff8c3dbd99eb6bec754
-  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v9.4.1/shield-boshrelease-9.4.1.tgz
-  version: 9.4.1
+  sha1: f7b754bb4ec102ec000eb5c4046b9dcd06d17290
+  url: https://github.com/shieldproject/shield-boshrelease/releases/download/v9.4.2/shield-boshrelease-9.4.2.tgz
+  version: 9.4.2
 stemcells:
 - alias: bionic
   os: ubuntu-resolute

@@ -99,9 +99,9 @@ The feature is experimental, so we recommend trying it on a canary SHIELD before
 
 Resolute ships without runit, so the `chpst` command is missing. The SHIELD release calls `chpst` in the control scripts that do not run under bpm, which means shieldd, its vault, and shield-agent cannot start on resolute. Every release up to and including 9.4.0, which is the version this kit pins by default, has the problem.
 
-For that reason the feature pins SHIELD 9.4.1, the first final release that replaces `chpst` with `setpriv`, and it uses that release in place of the pinned one for the environments that turn the feature on. Noble deployments keep the pinned release, and the environment file needs no extra parameters.
+For that reason the feature pins SHIELD 9.4.2. The 9.4.1 release was the first to replace `chpst` with `setpriv`, and 9.4.2 also lets the optional `store` job start on current nginx. The feature uses that release in place of the pinned one for the environments that turn the feature on. Noble deployments keep the pinned release, and the environment file needs no extra parameters.
 
-The shield-agent job comes from the same release, so the pin covers it. The `runtime-config` addon reads the SHIELD version from the last deployment, which means the agent that it installs on other deployments follows the pinned 9.4.1 release. The director must therefore have that release uploaded before we upload that runtime config.
+The shield-agent job comes from the same release, so the pin covers it. The `runtime-config` addon reads the SHIELD version from the last deployment, which means the agent that it installs on other deployments follows the pinned 9.4.2 release. The director must therefore have that release uploaded before we upload that runtime config.
 
 The kit does not deploy the bpm release, so unlike other kits there is no bpm pin to add. Before the first deploy we need to do two things on the director:
 
