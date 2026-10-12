@@ -60,6 +60,8 @@ The **SHIELD Genesis Kit** deploys the SHIELD Cloud Data Protection suite, allow
 
 - `okta` - Enables Okta authentication integration. Requires credentials to be stored in the vault.
 
+- `webdav-store` - Runs the SHIELD release `store` job on the SHIELD VM and generates its password, so that we have a WebDAV backup store without anything external. See [WebDAV Backup Store](#webdav-backup-store).
+
 - `resolute` - **Experimental.** Deploys on the ubuntu-resolute stemcell instead of ubuntu-noble. See [Ubuntu Resolute Stemcells](#ubuntu-resolute-stemcells).
 
 ## Cloud Provider Support
@@ -81,6 +83,26 @@ params:
   shield_disk_pool: shield # should be at least 1GB
   shield_vm_type:   small # VMs should have at least 1 CPU, and 1GB of memory
 ```
+
+## WebDAV Backup Store
+
+SHIELD needs a storage backend before it can take a backup, and a fresh deployment has none. The `webdav-store` feature gives us one without leaving the deployment, by running the `store` job from the SHIELD release on the same VM as the core.
+
+```yaml
+kit:
+  features:
+  - webdav-store
+```
+
+The `store` job is an nginx server with WebDAV enabled. It listens on port 9080 for plain HTTP, which redirects to HTTPS, and on port 9443 for HTTPS. The core already holds ports 80, 443, 8080, and 8200, so these are the defaults. We can change them with `params.webdav_port` and `params.webdav_ssl_port`. The job serves the kit server certificate, whose names include `params.shield_static_ip`, so clients that trust the kit CA can reach the store at `https://<shield_static_ip>:9443` without an exception.
+
+Access to the store requires a user name and password. The user name is `shield` unless we set `params.webdav_username`. The kit generates a 32 character password and keeps it in the environment's vault at `webdav:password`, next to the other SHIELD secrets, so `genesis add-secrets` creates it and an existing value is never rotated by a deploy. We can read it back with `safe get` when we register the store.
+
+The store job only starts on current nginx from SHIELD 9.4.2 onward, so the feature pins that release. An environment that turns on the `resolute` feature already uses the same release, and the two pins agree.
+
+The feature deploys the store, and it does not register the store with SHIELD. Once the core is initialized and unlocked, we create a tenant store of type `webdav` that points at `https://<shield_static_ip>:9443`, with the user name above and the generated password. We can do that in the web UI, or we can write the store as a JSON file with mode 600 and send it with `shield curl`, so that the password never appears in a command line. A store is healthy once `shield test-store` completes, and any backup job we create afterward can use it.
+
+Archives are written under `/var/vcap/store/webdav` on the persistent disk of the SHIELD VM. Purging an archive in SHIELD removes its record, but it may leave the file in place, so we check that directory when we reclaim space.
 
 ## Ubuntu Resolute Stemcells
 

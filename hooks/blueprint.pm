@@ -41,6 +41,10 @@ sub perform {
     $blueprint->add_files(qw(manifests/addons/secure.yml));
   }
 
+  if ($blueprint->want_feature('webdav-store')) {
+    $blueprint->add_files(qw(manifests/addons/webdav-store.yml));
+  }
+
   if ($blueprint->want_feature('oauth') || $blueprint->want_feature('oauth-provider')) {
     if ($blueprint->want_feature('oauth-provider')) {
       info("The oauth-provider feature flag is now just called 'oauth'.");
@@ -89,7 +93,7 @@ sub perform {
 
   # Add any ops files
   for my $feature ($blueprint->features) {
-    if (!grep {$_ eq $feature} qw(ocfp oauth oauth-provider proxy postgres-addon secure okta resolute)) {
+    if (!grep {$_ eq $feature} qw(ocfp oauth oauth-provider proxy postgres-addon secure okta webdav-store resolute)) {
       my $ops_file = $blueprint->env->path("ops/$feature.yml");
       if (-f $ops_file) {
           $blueprint->add_files($ops_file);

@@ -44,3 +44,7 @@ credentials:
   secure:
     failsafe:
       admin_password: random 24
+
+  webdav-store:
+    webdav:
+      password: random 32

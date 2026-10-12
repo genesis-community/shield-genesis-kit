@@ -42,6 +42,12 @@ var _ = Describe("Shield Kit", func() {
 			CPI:         "aws",
 		})
 		Test(Environment{
+			Name:        "webdavstore",
+			Exodus:      "webdavstore",
+			CloudConfig: "aws",
+			CPI:         "aws",
+		})
+		Test(Environment{
 			Name:        "stackit-base",
 			Exodus:      "stackit-base",
 			CloudConfig: "stackit",
