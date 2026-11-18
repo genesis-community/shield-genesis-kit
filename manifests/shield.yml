@@ -6,6 +6,8 @@ params:
 
 exodus:
   url:          (( concat "https://" params.external_domain ))
+  api_url:      (( concat "https://" params.external_domain ))
+  agent_ip:     (( grab params.shield_static_ip ))
   ca_cert:      (( vault meta.vault "/certs/ca:certificate" ))
   pubkey:       (( vault meta.vault "/agent:public" ))
   admin_username: "admin"

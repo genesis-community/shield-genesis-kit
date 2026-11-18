@@ -1,6 +1,8 @@
 exodus:
   admin_password: shield
   admin_username: admin
+  agent_ip: 10.99.0.16
+  api_url: https://10.99.0.16
   bosh: postgres
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
   features: postgres-addon

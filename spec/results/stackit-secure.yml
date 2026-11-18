@@ -1,6 +1,8 @@
 exodus:
   admin_password: <!{meta.vault}/failsafe:admin_password!>
   admin_username: shield-admin
+  agent_ip: 10.99.0.16
+  api_url: https://10.99.0.16
   bosh: stackit-secure
   ca_cert: <!{meta.vault}/certs/ca:certificate!>
   features: secure
